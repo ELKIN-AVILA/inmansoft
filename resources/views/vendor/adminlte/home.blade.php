@@ -169,25 +169,29 @@
           <div class="modal-content">
             <div class="modal-header">
               <button type="button" class="close" data-dismiss="modal">&times;</button>
-              <h4 class="modal-title">Componentes</h4>
+              <h4 class="modal-title">Asignar Componentes</h4>
             </div>
             <div class="modal-body">
 				<input type="hidden" name="idequ" id="idequ">
                <div class="row">
 				<div class="col-sm-12">
-					<button class="btn btn-primary" onclick="nuevocomponen();">Nuevo</button>
-				</div>
-				<div class="col-sm-12" id="formcompo">
-						<form action="" id="formcomponentes">
-								<input type="hidden" name="idequ" id="idequ">
-							<div class="row">
+						<form action="" id="formcomponentes" method="POST">
+								<input type="hidden" name="idequcompo" id="idequcompo">
+								<div class="row">
 								<div class="col-sm-12">
-										<h4>Crear Componente</h4>
 									<div class="col-sm-4">
-										<label for="">Tipo de Componente</label>
+										<label for="">Numplaca:</label>
 									</div>
 									<div class="col-sm-8">
-										<select name="tipcomponent" id="tipcomponente" class="form-control" onchange="traecomponente(this);">
+											<input type="text"  class="form-control" name="numplacacomp" id="numplacacomp" disabled>
+									</div>
+								</div>
+								<div class="col-sm-12">
+									<div class="col-sm-4">
+										<label for="">Tipo de Componente:</label>
+									</div>
+									<div class="col-sm-8">
+										<select name="tipcomponente" id="tipcomponente" class="form-control" onchange="traecomponente(this);">
 											<option value="">---Seleccione---</option>
 											@foreach ($tipcomponente as $mtipc)
 													<option value="{{ $mtipc->id }}">{{ $mtipc->nombre }}</option>
@@ -203,7 +207,9 @@
 										<select name="componenteid" id="componenteid" class="form-control"></select>
 									</div>
 								</div>
-
+								<div class="col-sm-12" style="text-align:end;">
+									<button type="submit" class="btn btn-primary">Guardar</button>
+								</div>
 							</div>	
 						</form>
 				</div>
@@ -212,13 +218,11 @@
 						<h4 style="text-align:center">Listado De Componentes</h4>
 						<table class="table table-bordered" id="componen">
 								<thead>
-									<th>#</th>
-									<th>Nombre</th>
 									<th>Tipo</th>
-									<th>Estado</th>
+									<th>Nombre</th>
 									<th>Acciones</th>
 								</thead>
-								<tbody>
+								<tbody id="listcomponen">
 
 								</tbody>
 							</table>
@@ -231,7 +235,62 @@
         </div>
       </div>
 	<!---End Modal--->
+	<!--- editar componente --->
+	<div class="modal fade" id="editcomponente" role="dialog">
+			<div class="modal-dialog">
+			  <div class="modal-content">
+				<div class="modal-header">
+				  <button type="button" class="close" data-dismiss="modal">&times;</button>
+				  <h4 class="modal-title">Editar  Componente</h4>
+				</div>
+				<div class="modal-body">
+					<form id="formulcompoedi">
+					<input type="hidden" name="idcompoedi" id="idcompoedi">
+					<div class="row">
+						<div class="col-sm-12">
+							<div class="col-sm-4">
+								<label for="">Tipo componente:</label>
+							</div>
+							<div class="col-sm-8">
+								<select name="tipcomponente_idcom" id="tipcomponente_idcom" class="form-control">
+									@foreach($tipcomponente as $mtipcom)
+										<option value="{{ $mtipcom->id }}">{{ $mtipcom->nombre }}</option>
+									@endforeach
+								</select>
+							</div>
+						</div>
+						<div class="col-sm-12">
+							<div class="col-sm-4">
+								<label for="">Componente:</label>
+							</div>
+							<div class="col-sm-8">
+								<select name="componente_idedi" id="componente_idedi" class="form-control">
+									@foreach($componentes as $mcomp)
+										<option value="{{ $mcomp->id }}">{{ $mcomp->nombre }}</option>
+									@endforeach
+								</select>
+							</div>
+						</div>
+						<br>
+						<div class="col-sm-12" style="text-align:right;">
+							<button type="submit" class="btn btn-primary">Guardar:</button>
+						</div>
+						</form>
+	
+					</div>
+					<div class="modal-footer">
+						
+					</div>
+				</div>
+			  </div>
+			  
+			</div>
+		  </div>
+	
+	
+	<!--- end edit componente-->
 	<!-- Programas--->
+	
 	  
     <div class="modal fade" id="nuevopro" role="dialog">
 		<div class="modal-dialog">
@@ -330,6 +389,7 @@
 			<div class="modal-body">
 				<form id="formulproedi">
 				<input type="hidden" name="ideqproedi" id="ideqproedi">
+				<input type="hidden" name="idregqui" id="idregqui">
 				<div class="row">
 					<div class="col-sm-12">
 						<div class="col-sm-4">
@@ -396,7 +456,50 @@
 	  </div>
 
 
-	<!--- -->
+	<!---Hoja de vida -->
+	<div class="modal fade" id="hojadevida"  role="dialog">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+              <h4 class="modal-title" id="numplahv"></h4>
+            </div>
+            <div class="modal-body">
+				<input type="hidden" name="idequ" id="idequ">
+				<h4 style="text-align:center;"><b>Software</b></h4>
+				<table class="table table-bordered" id="hojadevid">
+					<thead>
+						<th style="background:yellow;">Programa</th>
+						<th style="background:yellow;">Version</th>
+					</thead>
+					<tbody id="softvida">
+
+					</tbody>
+				</table>
+				<h4 style="text-align:center"><b>Hardware</b></h4>
+				<table class="table table-bordered" id="hojadevidcompo">
+					<thead>
+						<th style="background:yellow;">Tipo de Componente</th>
+						<th style="background:yellow;">Componente</th>
+					</thead>
+					<tbody id="hadrvida">
+
+					</tbody>
+				</table>
+				<p>realizar pdf</p>
+				<div class="row">
+					<div class="col-sm-12" style="text-align:end;">
+						<button class="btn  btn-success  btn-lg btn-block"> <i class="fa fa-file-pdf-o"></i></button>
+					</div>
+				</div>
+            </div>
+            
+          </div>
+          
+        </div>
+      </div>
+	<!---End Modal--->
+
 @endsection
 
 @section('script')

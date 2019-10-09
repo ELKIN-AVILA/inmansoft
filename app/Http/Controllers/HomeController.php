@@ -56,7 +56,8 @@ class HomeController extends Controller
 		$versiones=Versionpro::all();
 		$departamentos=Departamentos::all();
 		$tipmante=Tipmante::all();
-	    return view('adminlte::home',['sede'=>$sede,'departamentos'=>$departamentos,'tipmante'=>$tipmante,'nequipos'=>$nequipo,'tipcomponente'=>$tipcomponente,'programas'=>$programas,'version'=>$versiones]);
+		$componentes=Componentes::all();
+	    return view('adminlte::home',['sede'=>$sede,'departamentos'=>$departamentos,'tipmante'=>$tipmante,'nequipos'=>$nequipo,'tipcomponente'=>$tipcomponente,'programas'=>$programas,'version'=>$versiones,'componentes'=>$componentes]);
     }
 
     public function traerdepartamentos(Request $request){
@@ -117,8 +118,22 @@ class HomeController extends Controller
     } 
 	public function componentes(Request $request){
 		if($request->ajax()){
-			$componentes=Compoxequipo::where('equipos_id','=',$request->id)->get();
-			return response()->json($componentes);
+			/**poner tipcomponente */
+			$equipos=Equipos::where('id','=',$request->id)->get();
+			$componentesx=Compoxequipo::where('equipos_id','=',$request->id)->get();
+			$componente=array();
+			$tipcomponente=array();
+			foreach($componentesx as $mcompo){
+					$componentes=Componentes::where('id','=',$mcompo->componentes_id)->get();
+					foreach($componentes as $mcomp){
+						array_push($componente,['id'=>$mcomp->id,'nombre'=>$mcomp->nombre]);
+						$tipcom=Tipcomponente::where('id','=',$mcomp->tipcomponentes_id)->get();
+						foreach($tipcom as $mtip){
+							array_push($tipcomponente,['nombre'=>$mtip->nombre]);
+						}
+					}
+			}
+			return response()->json(['componente'=>$componente,'componentes'=>$componentesx,'equipo'=>$equipos,'tipcomponente'=>$tipcomponente]);
 		}
 	}
 	public function traecomponentes(Request $request){
@@ -127,13 +142,57 @@ class HomeController extends Controller
 			return response()->json($componentes);
 		}
 	}
+	public function eliminarcomponente(Request $request){
+		if($request->ajax()){
+			$compoxequipo=Compoxequipo::where('id','=',$request->id)->get();
+			$id="";
+			foreach($compoxequipo as $mcomp){
+				$id=$mcomp->equipos_id;
+			}
+			$componente=Compoxequipo::where('id','=',$request->id);
+			$componente->delete();
+			return response()->json(['msg'=>'Se elimino correctamente el componente','idequipo'=>$id]);
+		}
+	}
+	public function editarcomponente(Request $request){
+		if($request->ajax()){
+			$componente=Compoxequipo::where('id','=',$request->id)->get();
+			$tip="";
+			foreach($componente as $mco){
+				$tipcomp=Tipcomponente::where('id','=',$mco->componentes_id)->get();
+				foreach($tipcomp as $mtip){
+						$tip=$mtip->id;
+				}
+			}
+			return response()->json(['componente'=>$componente,'tip'=>$tip]);
+		}
+	}
+	public function guardarcomponente(Request $request){
+		if($request->ajax()){
+			$compoxequipo=new Compoxequipo();
+			$compoxequipo->equipos_id=$request->idequi;
+			$compoxequipo->componentes_id=$request->componente;
+			$compoxequipo->save();
+			return response()->json(['msg'=>'Se asigno correctamente el componente','idequipo'=>$request->idequi]);
+		}
+	}
 	public function traeprogramas(Request $request){
 		if($request->ajax()){
 				$equipost=Equipos::where('id','=',$request->id)->get();
 				$verpro=Softwarexequipo::where('equipos_id','=',$request->id)->get();
-				$programas=Programas::all();
+				$programas=array();
+				foreach($verpro as $mpro){
+					$versi=Versionpro::where('id','=',$mpro->versionpro_id)->get();
+					foreach($versi as $mver){
+						$pro=Programas::where('id','=',$mver->programas_id)->get();
+						foreach($pro as $mpro){
+							array_push($programas,$mpro->nombre);
+						}
+					}
+				}
+				$pro=Programas::all();
 				$version=Versionpro::all();
-				return response()->json(['programas'=>$programas,'equipo'=>$equipost,'softxequi'=>$verpro,'version'=>$version]);
+				return response()->json(['pro'=>$pro,'programas'=>$programas,'equipo'=>$equipost,'softxequi'=>$verpro,'version'=>$version]);
 				
 		}
 	}
@@ -178,6 +237,32 @@ class HomeController extends Controller
 				}
 			}
 			return response()->json(['software'=>$software,'programa_id'=>$programas]);
+		}
+	}
+	public function actualizarpro(Request $request){
+		if($request->ajax()){
+
+			$software=Softwarexequipo::where('id','=',$request->id)->update(['versionpro_id'=>$request->version,'licencia'=>$request->licencia,'fechainst'=>$request->fechainst,'fechacaducid'=>$request->fechacadu]);
+			return response()->json(['msg'=>'Se actualizo el registro','idequipo'=>$request->idequipo]);
+		}
+	}
+	public function hojavida(Request $request){
+		if($request->ajax()){
+			$equipos=Equipos::where('id','=',$request->id)->get();
+			$software=Softwarexequipo::where('equipos_id','=',$request->id)->get();
+			$programas=array();
+			$versiones=array();
+			foreach($software as $msoft){
+				$ver=Versionpro::where('id','=',$msoft->versionpro_id)->get();
+				foreach($ver as $mver){
+					array_push($versiones,$mver->nombre);
+					$progra=Programas::where('id','=',$mver->programas_id)->get();
+					foreach($progra as $mpro){
+						array_push($programas,$mpro->nombre);
+					}
+				}
+			}
+			return response()->json(['equipos'=>$equipos,'programas'=>$programas,'versiones'=>$versiones]);
 		}
 	}
 }

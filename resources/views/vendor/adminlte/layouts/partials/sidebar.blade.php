@@ -71,6 +71,7 @@
                     <ul class="treeview-menu">
                             <li><a href="{{ url('/Tipcomponente') }}"><span>Tipo de Componentes</span></a></li>
                             <li><a href="{{ url('/Componentes') }}"><span>Componentes</span></a></li>
+                            <li><a href="{{ url('/Tipmante') }}"><span>Tipo de Mantenimiento</span></a></li>
                             <li><a href="{{ url('/Programas') }}"><span>Programas</span></a></li>
                             <li><a href="{{ url('/Cronomantenimiento') }}"><span>Cronograma Mantenimiento</span></a></li>
 

@@ -11,13 +11,24 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post('/Home/traerequipos','HomeController@traerequipos');   
         Route::post('/Home/equipos','HomeController@equipos'); 
         Route::post('/Home/mantenimientos','HomeController@mantenimientos');
+        /**Componentes */
         Route::post('/Home/componentes','HomeController@componentes');
         Route::post('/Home/traecomponente','HomeController@traecomponentes');
+        Route::post('/Home/guardarcomponente','HomeController@guardarcomponente');
+        Route::post('/Home/eliminarcomponente','HomeController@eliminarcomponente');
+        Route::post('/Home/editarcomponente','HomeController@editarcomponente');
+
+
+        /**fin componentes */
         Route::post('/Home/traeprogramas','HomeController@traeprogramas');
         Route::post('/Home/traeversiones','HomeController@traeversiones');
         Route::post('/Home/guardarprogequi','HomeController@softwarexequipo');
+        Route::post('/Home/guardarprogequiactu','HomeController@actualizarpro');
         Route::post('/Home/editarpro','HomeController@editarpro');
         Route::post('/Home/eliminarpro','HomeController@eliminarpro');
+        /* Hoja de vida*/
+        Route::post('/Home/hojavi','HomeController@hojavida');
+        
 
         /**Departamentos */
         Route::get('/Departamentos','DepartamentosController@index');

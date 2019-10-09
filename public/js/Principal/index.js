@@ -1,5 +1,4 @@
 $(document).ready(function(){
-    $("#formcompo").hide();
     $("#formulario").validate({
         rules:{
             sede_id:{
@@ -33,10 +32,10 @@ $(document).ready(function(){
                             html+="<div class='panel panel-primary'>";
                             html+="<div class='panel-heading'>Numero de placa "+element['0']['numplaca']+"</div>";
                             html+="<div class='panel-body'>";
-                            html+="<button class='btn btn-success' onclick='programas("+element['0']['id']+")' data-toggle='tooltip' data-placement='top' title='Programas'><i class='fa fa-laptop' style='font-size:-webkit-xxx-large'></i></button>";
-                            html+="<button class='btn btn-warning' onclick='hardware("+element['0']['id']+")' data-toggle='tooltip' data-placement='top' title='Hardware'><i class='fa fa-microchip' style='font-size:-webkit-xxx-large'></i></button>";
-                            html+="<button class='btn btn-info' onclick='hoja("+element['0']['id']+")' data-toggle='tooltip' data-placement='top' title='Hoja de vida'><i class='fa fa-folder-open-o' style='font-size:-webkit-xxx-large'></i></button>";
-                            html+="<button onclick='mantenimientos("+element['0']['id']+");' class='btn btn-primary' data-toggle='tooltip' data-placement='top' title='Mantenimiento'><i class='fa fa-cog' style='font-size:-webkit-xxx-large'></i></button>"
+                            html+="<button class='btn btn-success' onclick='programas("+element['0']['id']+")' data-toggle='tooltip' data-placement='top' title='Software'><i class='fa fa-laptop' style='font-size: xx-large'></i></button>";
+                            html+="<button class='btn btn-warning' onclick='hardware("+element['0']['id']+")' data-toggle='tooltip' data-placement='top' title='Hardware'><i class='fa fa-wrench' style='font-size: xx-large'></i></button>";
+                            html+="<button class='btn btn-info' onclick='hoja("+element['0']['id']+")' data-toggle='tooltip' data-placement='top' title='Hoja de vida'><i class='fa fa-folder-open-o' style='font-size: xx-large'></i></button>";
+                            html+="<button onclick='mantenimientos("+element['0']['id']+");' class='btn btn-primary' data-toggle='tooltip' data-placement='top' title='Mantenimiento'><i class='fa fa-cog' style='font-size: xx-large'></i></button>"
                             html+="</div>";   
                             html+="</div>";
                             html+="</div>";
@@ -96,9 +95,108 @@ $(document).ready(function(){
         });
     }
    });
+   $("#formulproedi").validate({
+    rules:{
+		progr_idedi:{
+			required:true
+		},
+	    versionpro_idedi:{
+            required:true
+        },
+        licenciaedi:{
+            required:true
+        },
+        fechainstedi:{
+            required:true
+        },
+        fechacaduedi:{
+            required:true
+        }	
+    },
+    submitHandler:function(){
+        var idequipo=$("#ideqproedi").val();
+        var id=$("#idregqui").val();
+        var progr_id=$("#progr_idedi").val();
+        var versionpro_id=$("#version_proidedi").val();
+        var licencia=$("#licenciaedi").val();
+        var fechainst=$("#fechainstedi").val();
+        var fechacadu=$("#fechacaduedi").val();
+
+        $.ajax({
+            type:'POST',
+            url:'/Home/guardarprogequiactu',
+            data:{
+                '_token':_token,
+                'id':id,
+                'idequipo':idequipo,
+                'prog_id':progr_id,
+                'version':versionpro_id,
+                'licencia':licencia,
+                'fechainst':fechainst,
+                'fechacadu':fechacadu
+            },
+            success:function(data){
+                alertify.success(data.msg);
+                $("#progr_idedi").val(" ");
+                $("#version_proidedi").val(" ");
+                $("#licenciaedi").val(" ");
+                $("#fechainstedi").val(" ");
+                $("#fechacaduedi").val(" ");
+                $("#editprog").modal("hide");
+                actupro(data.idequipo);   
+            }
+        });
+    }
+   });
+   $("#formcomponentes").validate({
+        rules:{
+            'tipcomponent':{
+                required:true
+            },
+            'componenteid':{
+                required:true
+            }
+        },
+        submitHandler:function(){
+            var idequipo=$("#idequcompo").val();
+            var tipcomponent=$("#tipcomponente").val();
+            var componente=$("#componenteid").val();
+            $.ajax({
+                type:'POST',
+                url:'/Home/guardarcomponente',
+                data:{
+                    '_token':_token,
+                    'idequi':idequipo,
+                    'componente':componente
+                },
+                success:function(data){
+                    alertify.success(data.msg);
+                    actucomponente(data.idequipo);
+                }
+            });
+        }
+   });
+   $("#formulcompoedi").validate({
+        rules:{
+            tipcomponente_idcom:{
+                required:true
+            },
+            componente_idedi:{
+                required:true
+            }
+        },
+        submitHandler:function(){
+            var idcomponente=$("#idcompoedi").val();
+            var tipcomp=$("#tipcomponente_idcom").val();
+            var componente=$("#componente_idedi").val();
+            /**terminar proceo ajax */
+        }
+   });
 });
 /**Componentes */
 function hardware(id){
+    $("#componen tr:not(:first-child)").remove();
+
     $.ajax({
         type:'POST',
         url:'/Home/componentes',
@@ -107,16 +205,75 @@ function hardware(id){
             'id':id
         },
         success:function(data){
-            if(data.length!=0){
-            }
+                console.log(data);
+                console.log(data['componente']['0']['nombre']);
+                $("#idequcompo").val(data['equipo']['0']['id']);
+                $("#numplacacomp").val(data['equipo']['0']['numplaca']);
+                var band=0;
+                data['componentes'].forEach(ele=>{
+                    $('#componen tr:last').after("<tr><td>"+data['tipcomponente'][band]['nombre']+"</td><td>"+data['componente'][band]['nombre']+"</td><td><button class='btn btn-warning'  onclick='editarcompo("+ele.id+")'><i class='fa fa-edit'></i></button><button class='btn btn-danger' onclick='eliminarcompo("+ele.id+")'><i class='fa fa-trash'></i></button></td></tr>"); 
+                    band++;
+                });
+            /**agregar a la tabla */
             $("#componentes").modal("show");
         }
     });
 }
-function nuevocomponen(){
-    $("#formcompo").show();
+function eliminarcompo(id){
+    $.ajax({
+        type:'POST',
+        url:'/Home/eliminarcomponente',
+        data:{
+            '_token':_token,
+            'id':id
+        },
+        success:function(data){
+            alertify.success(data.msg);
+            actucomponente(data.idequipo);
+        }
+    });
+}
+function editarcompo(id){
+    $.ajax({
+        type:'POST',
+        url:'/Home/editarcomponente',
+        data:{
+            '_token':_token,
+            'id':id
+        },
+        success:function(data){
+            data['componente'].forEach(ele=>{
+                $("#idcompoedi").val(ele.id);
+                $("#tipcomponente_idcom").val(ele.componentes_id);
+            });
+            $("#componente_idedi").val(data['tip']);
+            $("#editcomponente").modal("show");
+        }
+    }); 
+}
+function actucomponente(id){
+    $("#componen tr:not(:first-child)").remove();    
+    $.ajax({
+        type:'POST',
+        url:'/Home/componentes',
+        data:{
+            '_token':_token,
+            'id':id
+        },
+        success:function(data){
+                $("#idequcompo").val(data['equipo']['0']['id']);
+                $("#numplacacomp").val(data['equipo']['0']['numplaca']);
+                var band=0;
+                data['componentes'].forEach(ele=>{
+                    $('#componen tr:last').after("<tr><td>"+data['tipcomponente'][band]['nombre']+"</td><td>"+data['componente'][band]['nombre']+"</td><td><button class='btn btn-warning'  onclick='editarcompo("+ele.id+")'><i class='fa fa-edit'></i></button><button class='btn btn-danger' onclick='eliminarcompo("+ele.id+")'><i class='fa fa-trash'></i></button></td></tr>"); 
+                    band++;
+                });
+            $("#componentes").modal("show");
+        }
+    });
 }
 function traecomponente(id){
+    $("#componenteid").empty();
     var idv=id.value;
     $.ajax({    
         type:'POST',
@@ -193,7 +350,7 @@ function dependencias(id){
             'id':id.value
         },
         success:function(data){
-          
+            
             $("#dependencias_id").append("<option>---Selecione---</option>")
 
             data['dependencias'].forEach(element => {
@@ -202,6 +359,31 @@ function dependencias(id){
         }
     });
 }
+/*hoja de vida*/
+function hoja(id){
+    $("#softvida").empty();
+    $("#hadrvida").empty();
+    $.ajax({
+        type:'POST',
+        url:'/Home/hojavi',
+        data:{
+            '_token':_token,
+            'id':id
+        },
+        success:function(data){
+            console.log(data);
+            data['equipos'].forEach(element=>{
+                $("#numplahv").html("Hoja de vida- "+element.numplaca);
+            });
+            for(i=0;i<data['programas'].length;i++){
+                $("#hojadevid").append("<tr><td>"+data['programas'][i]+"</td><td>"+data['versiones'][i]+"</td></tr>");
+            }
+            $("#hojadevida").modal('show');
+        }
+    });
+}
+
+/**fin hoja de vida */
 function equipos(id){
     $.ajax({
         type:'POST',
@@ -230,6 +412,7 @@ function equipos(id){
 }
 function programas(id){
     $("#prolist tr:not(:first-child)").remove();
+    $("#progr_id").empty();
     $.ajax({
         type:'POST',
         url:'/Home/traeprogramas',
@@ -239,7 +422,6 @@ function programas(id){
             
         },
         success:function(data){
-            console.log(data);
             var band=0;
             data['softxequi'].forEach(element=>{
                     var nombre="";
@@ -247,18 +429,16 @@ function programas(id){
                                 if(ell.id==element.versionpro_id){
                                     nombre=ell.nombre;
                                 }
-                    }); 
-                        $('#prolist tr:last').after("<tr><td style='text-align:left;'>"+data['programas'][band]['nombre']+"</td><td style='text-align:left;'>"+nombre+"</td><td>"+element.estado+"</td><td><button class='btn btn-warning' onclick='editarpro("+element.id+")'><i class='fa fa-edit'></i></button><button class='btn btn-danger' onclick='eliminarpro("+element.id+")'><i class='fa fa-trash'></i></button></td></tr>");
+                    });     
+                        $('#prolist tr:last').after("<tr><td style='text-align:left;'>"+data['programas'][band]+"</td><td style='text-align:left;'>"+nombre+"</td><td>"+element.estado+"</td><td><button class='btn btn-warning' onclick='editarpro("+element.id+")'><i class='fa fa-edit'></i></button><button class='btn btn-danger' onclick='eliminarpro("+element.id+")'><i class='fa fa-trash'></i></button></td></tr>");
                         band+=1;
             });               
             data['equipo'].forEach(element=>{
                 $("#ideqpro").val(element.id);
                 $("#numplpro").val(element.numplaca);
             });
-            $("#progr_id").empty();
-
             $("#progr_id").append("<option>----Selecione----</option>");
-            data['programas'].forEach(element=>{
+            data['pro'].forEach(element=>{
                 $("#progr_id").append("<option value="+element.id+">"+element.nombre+"</option>");
             }); 
             $("#nuevopro").modal('show');
@@ -277,6 +457,9 @@ function editarpro(id){
         success:function(data){
             $("#progr_idedi").val(data.programa_id);
             data['software'].forEach(element=>{
+                $("#ideqproedi").val(element.equipos_id);
+                $("#idregqui").val(element.id);
+                $("#version_proidedi").val(element.versionpro_id);
                 $("#licenciaedi").val(element.licencia);
                 $("#fechainstedi").val(element.fechainst);
                 $("#fechacaduedi").val(element.fechacaducid);
@@ -294,10 +477,8 @@ $.ajax({
     data:{
         '_token':_token,
         'id':id
-        
     },
     success:function(data){
-        console.log(data);
         var band=0;
         data['softxequi'].forEach(element=>{
                 var nombre="";
@@ -306,7 +487,7 @@ $.ajax({
                                 nombre=ell.nombre;
                             }
                 }); 
-                    $('#prolist tr:last').after("<tr><td style='text-align:left;'>"+data['programas'][band]['nombre']+"</td><td style='text-align:left;'>"+nombre+"</td><td>"+element.estado+"</td><td><button class='btn btn-danger' onclick='eliminarpro("+element.id+")'><i class='fa fa-trash'></i></button></td></tr>");
+                    $('#prolist tr:last').after("<tr><td style='text-align:left;'>"+data['programas'][band]+"</td><td style='text-align:left;'>"+nombre+"</td><td>"+element.estado+"</td><td><button class='btn btn-warning' onclick='editarpro("+element.id+")'><i class='fa fa-edit'></i></button><button class='btn btn-danger' onclick='eliminarpro("+element.id+")'><i class='fa fa-trash'></i></button></td></tr>");
                     band+=1;
         });               
         data['equipo'].forEach(element=>{
@@ -316,7 +497,7 @@ $.ajax({
         $("#progr_id").empty();
 
         $("#progr_id").append("<option>----Selecione----</option>");
-        data['programas'].forEach(element=>{
+        data['pro'].forEach(element=>{
             $("#progr_id").append("<option value="+element.id+">"+element.nombre+"</option>");
         }); 
         
@@ -369,7 +550,7 @@ function traepro(id){
                 $("#numplpro").val(element.numplaca);
             });
             $("#progr_id").append("<option>----Selecione----</option>");
-            data['programas'].forEach(element=>{
+            data['pro'].forEach(element=>{
                 $("#progr_id").append("<option value="+element.id+">"+element.nombre+"</option>");
             }); 
             $("#nuevopro").modal('show');
