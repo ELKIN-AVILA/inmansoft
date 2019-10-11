@@ -245,6 +245,8 @@
 				</div>
 				<div class="modal-body">
 					<form id="formulcompoedi">
+
+					<input type="hidden" name="idequicom" id="idequicom">
 					<input type="hidden" name="idcompoedi" id="idcompoedi">
 					<div class="row">
 						<div class="col-sm-12">
@@ -252,7 +254,7 @@
 								<label for="">Tipo componente:</label>
 							</div>
 							<div class="col-sm-8">
-								<select name="tipcomponente_idcom" id="tipcomponente_idcom" class="form-control">
+								<select name="tipcomponente_idcom" id="tipcomponente_idcom" class="form-control" onchange="traecomponenteeditar(this);">
 									@foreach($tipcomponente as $mtipcom)
 										<option value="{{ $mtipcom->id }}">{{ $mtipcom->nombre }}</option>
 									@endforeach
@@ -486,10 +488,9 @@
 
 					</tbody>
 				</table>
-				<p>realizar pdf</p>
 				<div class="row">
 					<div class="col-sm-12" style="text-align:end;">
-						<button class="btn  btn-success  btn-lg btn-block"> <i class="fa fa-file-pdf-o"></i></button>
+						<a class="btn  btn-success  btn-lg btn-block" id="hojaurl"> <i class="fa fa-file-pdf-o"></i></a>
 					</div>
 				</div>
             </div>

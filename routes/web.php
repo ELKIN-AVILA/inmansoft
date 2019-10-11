@@ -17,6 +17,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post('/Home/guardarcomponente','HomeController@guardarcomponente');
         Route::post('/Home/eliminarcomponente','HomeController@eliminarcomponente');
         Route::post('/Home/editarcomponente','HomeController@editarcomponente');
+        Route::post('/Home/actualizarcomponente','HomeController@actualizarcomponente');
 
 
         /**fin componentes */
@@ -28,6 +29,8 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post('/Home/eliminarpro','HomeController@eliminarpro');
         /* Hoja de vida*/
         Route::post('/Home/hojavi','HomeController@hojavida');
+        Route::get('/Home/hojavireporte/{id}','HomeController@hojavidareporte');
+
         
 
         /**Departamentos */

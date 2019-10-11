@@ -189,7 +189,24 @@ $(document).ready(function(){
             var idcomponente=$("#idcompoedi").val();
             var tipcomp=$("#tipcomponente_idcom").val();
             var componente=$("#componente_idedi").val();
+            var idequipo=$("#idequicom").val();
             /**terminar proceo ajax */
+            $.ajax({
+                type:'POST',
+                url:'/Home/actualizarcomponente',
+                data:{
+                    '_token':_token,
+                    'id':idcomponente,
+                    'tipcomp':tipcomp,
+                    'componente':componente,
+                    'idequipo':idequipo
+                },
+                success:function(data){
+                    alertify.success(data.msg);
+                    $("#editcomponente").modal("hide");
+                    actucomponente(data.idequipo);
+                }
+            });
         }
    });
 });
@@ -242,7 +259,9 @@ function editarcompo(id){
             'id':id
         },
         success:function(data){
+            console.log(data);
             data['componente'].forEach(ele=>{
+                $("#idequicom").val(ele.equipos_id);
                 $("#idcompoedi").val(ele.id);
                 $("#tipcomponente_idcom").val(ele.componentes_id);
             });
@@ -286,6 +305,24 @@ function traecomponente(id){
             $("#componenteid").append("<option>---Selecione---</option>");
             data.forEach(element=>{
                 $("#componenteid").append("<option value="+element.id+">"+element.nombre+"</option>");
+            });
+        }
+    })
+}
+function traecomponenteeditar(id){
+    $("#componente_idedi").empty();
+    var idv=id.value;
+    $.ajax({    
+        type:'POST',
+        url:'/Home/traecomponente',
+        data:{
+            '_token':_token,
+            'id':idv
+        },
+        success:function(data){
+            $("#componente_idedi").append("<option>---Selecione---</option>");
+            data.forEach(element=>{
+                $("#componente_idedi").append("<option value="+element.id+">"+element.nombre+"</option>");
             });
         }
     })
@@ -371,13 +408,20 @@ function hoja(id){
             'id':id
         },
         success:function(data){
-            console.log(data);
+            var idequ="";
             data['equipos'].forEach(element=>{
                 $("#numplahv").html("Hoja de vida- "+element.numplaca);
+                idequ=element.id;
             });
             for(i=0;i<data['programas'].length;i++){
                 $("#hojadevid").append("<tr><td>"+data['programas'][i]+"</td><td>"+data['versiones'][i]+"</td></tr>");
             }
+            
+            for(var e=0;e < data['componentes'].length;e++){
+                $("#hojadevidcompo").append("<tr><td>"+data['tipcomponente'][e]+"</td><td>"+data['componentes'][e]+"</td></tr>");
+            }
+            var url="/Home/hojavireporte/"+idequ;
+            $("#hojaurl").attr('href',url);
             $("#hojadevida").modal('show');
         }
     });

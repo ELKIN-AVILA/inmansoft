@@ -21,6 +21,8 @@ use App\Programas;
 use App\Versionpro;
 use App\Softwarexequipo;
 use Illuminate\Support\Facades\DB;
+use  Anouar\Fpdf\Facades\Fpdf as Fpdf;
+
 /**
  * Class HomeController
  * @package App\Http\Controllers
@@ -167,6 +169,12 @@ class HomeController extends Controller
 			return response()->json(['componente'=>$componente,'tip'=>$tip]);
 		}
 	}
+	public function actualizarcomponente(Request $request){
+		if($request->ajax()){
+			$compoxequipo=Compoxequipo::where('id','=',$request->id)->update(['componentes_id'=>$request->componente]);
+			return response()->json(['msg'=>"Se Actualizo el componente",'idequipo'=>$request->idequipo]);
+		}
+	}
 	public function guardarcomponente(Request $request){
 		if($request->ajax()){
 			$compoxequipo=new Compoxequipo();
@@ -262,7 +270,37 @@ class HomeController extends Controller
 					}
 				}
 			}
-			return response()->json(['equipos'=>$equipos,'programas'=>$programas,'versiones'=>$versiones]);
+			$compoxequipo=Compoxequipo::where('equipos_id','=',$request->id)->get();
+			$componente=array();
+			$tipcomponente=array();
+			foreach($compoxequipo as $mcomp){
+				$comp=Componentes::where('id','=',$mcomp->componentes_id)->get();
+				foreach($comp as $mcompone){
+					array_push($componente,$mcompone->nombre);
+					$tipcom=Tipcomponente::where('id','=',$mcompone->tipcomponentes_id)->get();
+					foreach($tipcom as $mtip){
+						array_push($tipcomponente,$mtip->nombre);
+					}
+				}	
+			}
+			return response()->json(['equipos'=>$equipos,'programas'=>$programas,'versiones'=>$versiones,'componentes'=>$componente,'tipcomponente'=>$tipcomponente]);
 		}
 	}
+	public function hojavidareporte(Request $request,$id){
+			$fpdf = new Fpdf();
+            $fpdf::AddPage('L','Legal');
+            $fpdf::SetFont('Arial','B',16);
+            $fpdf::Image('img/camara.png',40,10,32);
+            $fpdf::SetXY(10,10);
+            $fpdf::Cell(340,30,"",1,0,'C');
+            $fpdf::SetFont('Arial','',12);
+            $fpdf::SetXY(310,10);
+			$fpdf::Cell(40,8.3,"SI-FRT-000",1,1,'C');
+			$equipos=Equipos::find($id);
+			$fpdf::Cell(340,8,"Hoja de vida ".$equipos->numplaca,0,1,'C');
+            $fpdf::Output('');
+            exit;        
+        
+	}
 }
+

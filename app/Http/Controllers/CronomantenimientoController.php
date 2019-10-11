@@ -130,7 +130,8 @@ class CronomantenimientoController extends Controller
         }
     }
     public function reporte(Request $request){
-            $id=$request->id;
+            //$id=$request->id;
+            $id=1;
             $fpdf = new Fpdf();
             $fpdf::AddPage('L','Legal');
             $fpdf::SetFont('Arial','B',16);
@@ -205,7 +206,7 @@ class CronomantenimientoController extends Controller
             $fpdf::SetX(10);
             $fpdf::Cell(40,5,"FIRMA AUTOR",1,0,'C',0);
             $fpdf::Cell(300,5,"",1,1,'C',0);
-            $fpdf::Output('');
+            $fpdf::Output('D');
             exit;        
         
     }
