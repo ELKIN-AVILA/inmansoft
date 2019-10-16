@@ -21,6 +21,7 @@ class CreateMantenimientosTable extends Migration
             $table->unsignedBigInteger('tipmante_id')->nullable();
             $table->unsignedBigInteger('usuarios_id')->nullable();
             $table->enum('tipo',['P','N']);
+            $table->enum('estado',['N','R']);
             $table->foreign('cronomantenimiento_id')->references('id')->on('cronomantenimientos');
             $table->foreign('equipos_id')->references('id')->on('equipos');
             $table->foreign('tipmante_id')->references('id')->on('tipmante');

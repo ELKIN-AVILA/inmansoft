@@ -105,6 +105,7 @@ class CronomantenimientoController extends Controller
                 $mantenim->cronomantenimiento_id=$request->iddet;
                 $mantenim->equipos_id=$mmant->equipos_id;
                 $mantenim->tipo="P"; 
+                $mantenim->tipmante_id=3;
                 $mantenim->save();
                 /**fin */
            }

@@ -6,6 +6,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests;
 use Illuminate\Http\Request;
+use App\User;
 use App\Localizacion;
 use App\Departamentos;
 use App\Dependencias;
@@ -20,6 +21,8 @@ use App\Compoxequipo;
 use App\Programas;
 use App\Versionpro;
 use App\Softwarexequipo;
+use App\Detmantenimiento;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use  Anouar\Fpdf\Facades\Fpdf as Fpdf;
 
@@ -117,7 +120,54 @@ class HomeController extends Controller
 		    $mantenimientos=Mantenimiento::where('equipos_id','=',$request->id)->get();
 		    return response()->json($mantenimientos);
 	    }
-    } 
+	} 
+	public function guardardetmante(Request $request){
+		if($request->ajax()){
+			$detmantenimiento= new Detmantenimiento();
+			$detmantenimiento->mantenimiento_id=$request->idmante;
+			$detmantenimiento->descripcion=$request->descripcion;
+			$detmantenimiento->save();
+			$mantenimiento=Mantenimiento::where('id','=',$request->idmante)->update(['estado'=>'R','usuarios_id'=>Auth::id()]);
+
+			return response()->json(['msg'=>'Se guardo el detalle del mantenimiento','idmante'=>$request->idmante]);
+		}
+	}
+	public function infomantenimiento(Request $request){
+		if($request->ajax()){
+			$mantenimiento=Mantenimiento::find($request->id);
+			$tipmante=Tipmante::find($mantenimiento->tipmante_id);
+			$usuarios=User::find($mantenimiento->usuarios_id);
+			$detmantenimiento=Detmantenimiento::where('mantenimiento_id','=',$request->id)->get();
+			return response()->json(['mantenimiento'=>$mantenimiento,'tipmante'=>$tipmante,'usuario'=>$usuarios,'detmantenimiento'=>$detmantenimiento]);
+		}
+	}
+	public function infomantepdf(Request $request,$id){
+		$mantenimiento=Mantenimiento::find($id);
+		$tipmante=Tipmante::find($mantenimiento->tipmante_id);
+		$usuarios=User::find($mantenimiento->usuarios_id);
+		$detmantenimiento=Detmantenimiento::where('mantenimiento_id','=',$id)->get();
+		$fpdf = new Fpdf();
+            $fpdf::AddPage('L','Legal');
+            $fpdf::SetFont('Arial','B',16);
+            $fpdf::Image('img/camara.png',40,13,32);
+            $fpdf::SetXY(10,10);
+            $fpdf::Cell(340,32,"",1,0,'C');
+            $fpdf::SetFont('Arial','',12);
+            $fpdf::SetXY(310,10);
+			$fpdf::Cell(40,8.3,"SI-FRT-000",1,1,'C');
+			$equipos=Equipos::find($mantenimiento->equipos_id);
+			$fpdf::Cell(340,8,"Formato De Mantenimiento ",0,1,'C');
+			$fpdf::Cell(340,8,$equipos->numplaca,0,1,'C');
+			$fpdf::Ln();
+			$fpdf::Cell(85,8,"Fecha del mantenimiento:",1,0,'C');
+			$fpdf::Cell(85,8,$mantenimiento->fecha,1,0,'C');
+			$fpdf::Cell(85,8,"Nombre responsable mantenimiento",1,0,'C');
+			$fpdf::Cell(85,8,"",1,1,'C');
+				
+
+            $fpdf::Output('');
+            exit; 
+	}
 	public function componentes(Request $request){
 		if($request->ajax()){
 			/**poner tipcomponente */

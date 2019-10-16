@@ -8,7 +8,8 @@
 <script src="{{ asset('/js/moment.js') }}"></script>
 <script src="{{ asset('/js/daterangepicker.js') }}"></script>
 <script src="{{ asset('/js/notify.js') }}"></script>
-
+<!-- js fileinput-->
+<!-- the main fileinput plugin file -->
 <script>
 var _token=$('input[name=_token]').val();   
 </script>

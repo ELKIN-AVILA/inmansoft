@@ -177,7 +177,7 @@ return [
         Acacha\AdminLTETemplateLaravel\Providers\AdminLTETemplateServiceProvider::class,
         Barryvdh\DomPDF\ServiceProvider::class,
         Anouar\Fpdf\FpdfServiceProvider::class,
-
+        
     ],
 
     /*

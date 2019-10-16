@@ -1,4 +1,5 @@
 $(document).ready(function(){
+    
     $("#formulario").validate({
         rules:{
             sede_id:{
@@ -209,6 +210,31 @@ $(document).ready(function(){
             });
         }
    });
+   $("#formuldetmante").validate({
+        rules:{
+            descripcionmante:{
+                required:true
+            }
+        },
+        submitHandler:function(){
+            var descripcion=$("#descripcionmante").val();
+            var idmante=$("#idequimante").val();
+            $.ajax({
+                type:'POST',
+                url:'/Home/guardardetmante',
+                data:{
+                    '_token':_token,
+                    'idmante':idmante,
+                    'descripcion':descripcion
+                },
+                success:function(data){
+                    alertify.success(data.msg);
+                    $("#descripcionmante").val(" ");
+                    $("#detmantenimiento").modal('hide');
+                }
+            }); 
+        }
+   });
 });
 /**Componentes */
 function hardware(id){
@@ -331,6 +357,8 @@ function traecomponenteeditar(id){
 
 function mantenimientos(id){
     $("#manteni > tbody").empty();
+    $("#mantenire > tbody").empty();
+
     $.ajax({
         type:'POST',
         url:'/Home/mantenimientos',
@@ -339,6 +367,7 @@ function mantenimientos(id){
             'id':id
         },
         success:function(data){
+            console.log(data);
             var i=0;
             data.forEach(element=>{
                 i++;
@@ -348,11 +377,43 @@ function mantenimientos(id){
                 }else{
                     tipo="No Programada";
                 }
-                $("#manteni > tbody:last-child").append("<tr><td>"+i+"</td><td>"+element.fecha+"</td><td>"+tipo+"</td><td></td><td><button>Mantenimiento</button></td></tr>")
+                if(element.estado=='N'){
+                    $("#manteni > tbody:last-child").append("<tr><td>"+i+"</td><td>"+element.fecha+"</td><td>"+tipo+"</td><td></td><td><button  class='btn btn-success' onclick='manteni("+element.id+");'>+</button><button class='btn btn-info' onclick='fotos("+element.id+");'><i class='fa fa-image'></i></button></td></tr>")
+                }else{
+                    $("#mantenire > tbody:last-child").append("<tr><td>"+i+"</td><td>"+element.fecha+"</td><td>"+tipo+"</td><td><button  class='btn btn-success' onclick='infomante("+element.id+");'><i class='fa fa-info-circle'></i></button><button class='btn btn-info' onclick='fotos("+element.id+");'><i class='fa fa-image'></i></button><a class='btn  btn-danger' href='/Home/infomantepdf/"+element.id+"'><i class='fa fa-file-pdf-o'></i></a></td></tr>");
+
+                }
             });
             $("#mantenimientos").modal("show");
         }
     });
+}
+/**Info mantenimiento */
+const infomante=(id)=> $.ajax({
+            type:'POST',
+            url:'/Home/infomantenimiento',
+            data:{
+                '_token':_token,
+                'id':id
+            },
+            success:function(data){ 
+                $("#respomanteinfo").html(data['usuario']['name']);
+                $("#fechamanteinfo").html(data['mantenimiento']['fecha']);
+                $("#tipomanteinfo").html(data['tipmante']['nombre']);
+                data['detmantenimiento'].forEach(el=>{
+                    $("#descripcionmanteinfo").html(el.descripcion);
+                });
+                $("#infomantenimiento").modal("show");
+            }
+});
+
+function manteni(id){
+    $("#idequimante").val(id);
+    $("#detmantenimiento").modal("show");
+}
+function fotos(id){
+    $("#idequifotos").val(id);
+    $("#fotosmantenimiento").modal("show");
 }
 function nuevoman(){
     $("#nuevoman").modal("show");
@@ -437,6 +498,7 @@ function equipos(id){
             'id':id
         },
         success:function(data){
+            console.log(data);
             $("#equipos").empty();
             var html="";
             
@@ -445,7 +507,8 @@ function equipos(id){
                     html+="<div class='panel panel-primary'>";
                     html+="<div class='panel-heading'>Numero placa:"+element['0']['numplaca']+"</div>";
                     html+="<div class='panel-body'>";
-                    html+="<button class='btn btn-primary btn-sm'>Mantenimientos</button>"; 
+                 
+                    html+="<button class='btn btn-primary'>Mantenimientos</button>"; 
                     html+="</div>";
                     html+="</div>";
                     html+="</div>";

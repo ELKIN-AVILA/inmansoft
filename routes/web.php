@@ -19,6 +19,12 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post('/Home/editarcomponente','HomeController@editarcomponente');
         Route::post('/Home/actualizarcomponente','HomeController@actualizarcomponente');
 
+        /**Mantenimientos */
+        Route::post('/Home/detmantenimientos','HomeController@detmantenimientos');
+        Route::post('/Home/guardardetmante','HomeController@guardardetmante');
+        Route::post('/Home/infomantenimiento','HomeController@infomantenimiento');
+        Route::get('/Home/infomantepdf/{id}','HomeController@infomantepdf');
+
 
         /**fin componentes */
         Route::post('/Home/traeprogramas','HomeController@traeprogramas');

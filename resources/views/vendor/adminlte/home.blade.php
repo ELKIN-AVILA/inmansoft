@@ -19,7 +19,7 @@
 			  	
 			<div class="col-sm-4">
 					<div class="panel panel-primary">
-							<div class="panel-heading" style="text-align:center;">Sede:{{ $msede->nombre }}</div>
+							<div class="panel-heading" style="text-align:center;background:darkblue">Sede:{{ $msede->nombre }}</div>
 							<div class="panel-body">
 								 <div class="row">
 									<div class="col-sm-12" style="text-align:center;">
@@ -91,17 +91,29 @@
 				<input type="hidden" name="idequ" id="idequ">
                <div class="row">
 				<div class="col-sm-12">
-					<button class="btn btn-primary" onclick="nuevoman();">Nuevo</button>
+					<button class="btn btn-primary"  onclick="nuevoman();">Nuevo</button>
 				</div>
 				<div class="col-sm-12">
 						<br>
-						<h4 style="text-align:center">Listado De Mantenimientos</h4>
+						<h4 style="text-align:center">Listado De Mantenimientos por realizar</h4>
 						<table class="table table-bordered" id="manteni">
 								<thead>
 									<th>#</th>
 									<th>Fecha</th>
 									<th>Tipo</th>
 									<th>Estado</th>
+									<th>Acciones</th>
+								</thead>
+								<tbody>
+
+								</tbody>
+							</table>
+							<h4 style="text-align:center">Listado De Mantenimientos Realizados</h4>
+						<table class="table table-bordered" id="mantenire">
+								<thead>
+									<th>#</th>
+									<th>Fecha</th>
+									<th>Tipo</th>
 									<th>Acciones</th>
 								</thead>
 								<tbody>
@@ -117,8 +129,106 @@
         </div>
       </div>
 	<!---End Modal--->
-	<!-- mantenimiento new-->
+	<!-- info mantenimiento-->
+	<div class="modal fade" id="infomantenimiento" role="dialog">
+			<div class="modal-dialog">
+			  <div class="modal-content">
+				<div class="modal-header">
+				  <button type="button" class="close" data-dismiss="modal">&times;</button>
+				  <h4 class="modal-title">Informacion Mantenimiento</h4>
+				</div>
+				<div class="modal-body">
+					<div class="row">
 
+						<div class="col-sm-12">
+								<label for="" class="col-sm-6">Responsable Mantenimiento: </label>
+								<p class="col-sm-6" id="respomanteinfo"></p>
+						</div>
+						<div class="col-sm-12">
+								<label for="" class="col-sm-6">Fecha de Mantenimiento:</label>
+								<p class="col-sm-6" id="fechamanteinfo"></p>	
+						</div>
+						<div class="col-sm-12">
+								<label for="" class="col-sm-6">Tipo de Mantenimiento:</label>
+								<p class="col-sm-6" id="tipomanteinfo"></p>
+						</div>
+						<label for="" class="col-sm-12" style="text-align:center;">Descripcion del Mantenimiento:</label>
+						<div class="col-sm-12" id="descripcionmanteinfo">
+						</div>
+					</div>
+				</div>
+				
+			  </div>
+			  
+			</div>
+		  </div>	  
+
+	<!-- end modal-->
+	<!--- new detmantenimiento--->
+	<div class="modal fade" id="detmantenimiento" role="dialog">
+			<div class="modal-dialog">
+			  <div class="modal-content">
+				<div class="modal-header">
+				  <button type="button" class="close" data-dismiss="modal">&times;</button>
+				  <h4 class="modal-title">Detalle Mantenimiento</h4>
+				</div>
+				<div class="modal-body">
+					<div class="row">
+						<form action="" id="formuldetmante">
+								<input type="hidden" name="idequimante" id="idequimante">
+							<div class="row">
+								<div class="col-sm-12">
+									<div class="col-sm-4">
+										<label for="">Descripcion:</label>
+									</div>
+									<div class="col-sm-8">
+										<textarea name="descripcionmante" id="descripcionmante" cols="30" rows="10"></textarea>
+									</div>
+								</div>
+							</div>
+							<div class="col-sm-12 md-2" style="text-align:end">
+								<button class="btn btn-success">Guardar</button>
+							</div>
+						</form>
+					</div>
+				</div>
+				
+			  </div>
+			  
+			</div>
+		  </div>	  
+
+	<!--- end modal-->
+	<!-- modal fotos -->
+	<div class="modal fade" id="fotosmantenimiento" role="dialog">
+			<div class="modal-dialog">
+			  <div class="modal-content">
+				<div class="modal-header">
+				  <button type="button" class="close" data-dismiss="modal">&times;</button>
+				  <h4 class="modal-title">Fotos de Mantenimiento</h4>
+				</div>
+				<div class="modal-body">
+					<input type="hidden" name="idequifotos" id="idequifotos">
+					<div class="row">
+							<div class="container">
+									<div class="row">
+											<div class="form-group">
+													<div class="file-loading">
+														<input id="file-1" type="file" name="file" multiple class="file" data-overwrite-initial="false" data-min-file-count="2">
+													</div>
+												</div>
+									</div>
+							</div>
+					</div>
+				</div>
+				
+			  </div>
+			  
+			</div>
+		  </div>	
+	<!-- end modal fotos-->
+	<!-- mantenimiento new-->
+	
     <div class="modal fade" id="nuevoman" role="dialog">
 			<div class="modal-dialog">
 			  <div class="modal-content">
