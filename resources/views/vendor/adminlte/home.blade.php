@@ -153,7 +153,8 @@
 								<p class="col-sm-6" id="tipomanteinfo"></p>
 						</div>
 						<label for="" class="col-sm-12" style="text-align:center;">Descripcion del Mantenimiento:</label>
-						<div class="col-sm-12" id="descripcionmanteinfo">
+						<div class="col-sm-12" style="text-align:center">
+							<textarea name="" id="descripcionmanteinfo" cols="30" rows="10" disabled style="margin: 0px; width: 566px; height: 229px;resize:none;overflow:auto;"></textarea>
 						</div>
 					</div>
 				</div>
@@ -172,6 +173,19 @@
 				  <button type="button" class="close" data-dismiss="modal">&times;</button>
 				  <h4 class="modal-title">Detalle Mantenimiento</h4>
 				</div>
+				<style type="text/css">
+					.main-section{
+						margin:0 auto;
+						padding: 20px;
+						margin-top: 100px;
+						background-color: #fff;
+						box-shadow: 0px 0px 20px #c1c1c1;
+					}
+					.fileinput-remove,
+					.fileinput-upload{
+						display: none;
+					}
+				</style>
 				<div class="modal-body">
 					<div class="row">
 						<form action="" id="formuldetmante">
@@ -185,6 +199,21 @@
 										<textarea name="descripcionmante" id="descripcionmante" cols="30" rows="10"></textarea>
 									</div>
 								</div>
+								<div class="container">
+										<div class="row">
+											<div class="col-lg-8 col-sm-12 col-11 main-section">
+												<h1 class="text-center text-danger">File Input Example</h1><br>
+												
+													{!! csrf_field() !!}
+													<div class="form-group">
+														<div class="file-loading">
+															<input id="file-1" type="file" name="file" multiple class="file" data-overwrite-initial="false" data-min-file-count="2">
+														</div>
+													</div>
+												
+											</div>
+										</div>
+									</div>
 							</div>
 							<div class="col-sm-12 md-2" style="text-align:end">
 								<button class="btn btn-success">Guardar</button>
@@ -237,14 +266,15 @@
 				  <h4 class="modal-title">Crear Mantenimiento</h4>
 				</div>
 				<div class="modal-body">
-					<input type="hidden" name="idequipo" id="idequipo">
 					<div class="row">
+						<form action="" id="formulmante">
+						<input type="hidden" name="idequipoman" id="idequipoman">
 						<div class="col-sm-12">
 							<div class="col-sm-4">
 								<label for="">Fecha:</label>
 							</div>
 							<div class="col-sm-8">
-								<input type="date" class="form-control" disabled>
+								<input type="date" class="form-control" disabled id="fechamante" value="<?php echo date("Y-m-d");?>">
 							</div>				
 						</div>
 						<div class="col-sm-12">
@@ -264,6 +294,7 @@
 							<br>
 							<button class="btn btn-success">Guardar</button>
 						</div>
+						</form>
 					</div>
 				</div>
 				

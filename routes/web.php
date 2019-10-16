@@ -24,6 +24,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post('/Home/guardardetmante','HomeController@guardardetmante');
         Route::post('/Home/infomantenimiento','HomeController@infomantenimiento');
         Route::get('/Home/infomantepdf/{id}','HomeController@infomantepdf');
+        Route::post('/Home/guardarmantenimiento','HomeController@guardarmantenimiento');
 
 
         /**fin componentes */

@@ -1,5 +1,20 @@
 $(document).ready(function(){
-    
+    $("#file-1").fileinput({
+        theme: 'fa',
+        uploadUrl: "/image-view",
+        uploadExtraData: function() {
+            return {
+                _token: $("input[name='_token']").val(),
+            };
+        },
+        allowedFileExtensions: ['jpg', 'png', 'gif'],
+        overwriteInitial: false,
+        maxFileSize:2000,
+        maxFilesNum: 10,
+        slugCallback: function (filename) {
+            return filename.replace('(', '_').replace(']', '_');
+        }
+    });
     $("#formulario").validate({
         rules:{
             sede_id:{
@@ -230,9 +245,38 @@ $(document).ready(function(){
                 success:function(data){
                     alertify.success(data.msg);
                     $("#descripcionmante").val(" ");
+                    mantenimientos(data['idequipo']['0']['equipos_id']);
                     $("#detmantenimiento").modal('hide');
                 }
             }); 
+        }
+   });
+   $("#formulmante").validate({
+        rules:{
+            tipmante_id:{
+                required:true
+            }
+        },
+        submitHandler:function(){
+            var idequipoman=$("#idequipoman").val();
+            var tipmante=$("#tipmante_id").val();
+            var fecha=$("#fechamante").val();
+            $.ajax({
+                type:'POST',
+                url:'/Home/guardarmantenimiento',
+                data:{
+                    '_token':_token,
+                    'idequipo':idequipoman,
+                    'tipmante_id':tipmante,
+                    'fecha':fecha
+                },
+                success:function(data){
+                    alertify.success(data.msg);
+                    $("#tipmante_id").val(" ");
+                    mantenimientos(data.idequipo);
+                    $("#nuevoman").modal("hide");
+                }
+            });
         }
    });
 });
@@ -248,8 +292,6 @@ function hardware(id){
             'id':id
         },
         success:function(data){
-                console.log(data);
-                console.log(data['componente']['0']['nombre']);
                 $("#idequcompo").val(data['equipo']['0']['id']);
                 $("#numplacacomp").val(data['equipo']['0']['numplaca']);
                 var band=0;
@@ -367,9 +409,9 @@ function mantenimientos(id){
             'id':id
         },
         success:function(data){
-            console.log(data);
+            $("#idequ").val(data['idequipo']);
             var i=0;
-            data.forEach(element=>{
+            data['mantenimientos'].forEach(element=>{
                 i++;
                 tipo="";
                 if(element.tipo=="P"){
@@ -416,6 +458,9 @@ function fotos(id){
     $("#fotosmantenimiento").modal("show");
 }
 function nuevoman(){
+    var idequipo=$("#idequ").val();
+    $("#idequipoman").val(idequipo);
+    
     $("#nuevoman").modal("show");
 }
 /**actualizar la url del disparador */

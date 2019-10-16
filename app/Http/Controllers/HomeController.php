@@ -22,6 +22,9 @@ use App\Programas;
 use App\Versionpro;
 use App\Softwarexequipo;
 use App\Detmantenimiento;
+use App\Responsables;
+use App\Empleados;
+use App\Modelequi;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use  Anouar\Fpdf\Facades\Fpdf as Fpdf;
@@ -118,9 +121,22 @@ class HomeController extends Controller
     public function mantenimientos(Request $request){
 	    if($request->ajax()){
 		    $mantenimientos=Mantenimiento::where('equipos_id','=',$request->id)->get();
-		    return response()->json($mantenimientos);
+		    return response()->json(['mantenimientos'=>$mantenimientos,'idequipo'=>$request->id]);
 	    }
 	} 
+	public function guardarmantenimiento(Request $request){
+		if($request->ajax()){
+			$mantenimiento=new Mantenimiento();
+			$mantenimiento->fecha=$request->fecha;
+			$mantenimiento->equipos_id=$request->idequipo;
+			$mantenimiento->tipmante_id=$request->tipmante_id;
+			$mantenimiento->usuarios_id=Auth::id();
+			$mantenimiento->tipo='N';
+			$mantenimiento->estado='N';
+			$mantenimiento->save();
+			return response()->json(['msg'=>'Se creo el mantenimiento','idequipo'=>$request->idequipo]);
+		}
+	}
 	public function guardardetmante(Request $request){
 		if($request->ajax()){
 			$detmantenimiento= new Detmantenimiento();
@@ -128,8 +144,10 @@ class HomeController extends Controller
 			$detmantenimiento->descripcion=$request->descripcion;
 			$detmantenimiento->save();
 			$mantenimiento=Mantenimiento::where('id','=',$request->idmante)->update(['estado'=>'R','usuarios_id'=>Auth::id()]);
-
-			return response()->json(['msg'=>'Se guardo el detalle del mantenimiento','idmante'=>$request->idmante]);
+			$idequipo="";
+			$mante=Mantenimiento::where('id','=',$request->idmante)->get();
+			
+			return response()->json(['msg'=>'Se guardo el detalle del mantenimiento','idequipo'=>$mante]);
 		}
 	}
 	public function infomantenimiento(Request $request){
@@ -146,27 +164,99 @@ class HomeController extends Controller
 		$tipmante=Tipmante::find($mantenimiento->tipmante_id);
 		$usuarios=User::find($mantenimiento->usuarios_id);
 		$detmantenimiento=Detmantenimiento::where('mantenimiento_id','=',$id)->get();
+		$equipo=Equipos::find($mantenimiento->equipos_id);
+		$responsable=Responsables::find($mantenimiento->equipos_id);
+		$empleados=Empleados::find($responsable->empleados_id);
+		$localizacion=Localizacion::where('equipos_id',$mantenimiento->equipos_id)->get();	
 		$fpdf = new Fpdf();
-            $fpdf::AddPage('L','Legal');
-            $fpdf::SetFont('Arial','B',16);
-            $fpdf::Image('img/camara.png',40,13,32);
-            $fpdf::SetXY(10,10);
-            $fpdf::Cell(340,32,"",1,0,'C');
-            $fpdf::SetFont('Arial','',12);
-            $fpdf::SetXY(310,10);
-			$fpdf::Cell(40,8.3,"SI-FRT-000",1,1,'C');
-			$equipos=Equipos::find($mantenimiento->equipos_id);
-			$fpdf::Cell(340,8,"Formato De Mantenimiento ",0,1,'C');
-			$fpdf::Cell(340,8,$equipos->numplaca,0,1,'C');
-			$fpdf::Ln();
-			$fpdf::Cell(85,8,"Fecha del mantenimiento:",1,0,'C');
-			$fpdf::Cell(85,8,$mantenimiento->fecha,1,0,'C');
-			$fpdf::Cell(85,8,"Nombre responsable mantenimiento",1,0,'C');
-			$fpdf::Cell(85,8,"",1,1,'C');
-				
-
-            $fpdf::Output('');
-            exit; 
+		$fpdf::AddPage('L','Legal');
+		$fpdf::SetFont('Arial','B',16);
+		$fpdf::SetTitle("Formato de Mantenimiento Equipo-".$equipo->numplaca,true);
+		$fpdf::Image('img/camara.png',40,13,32);
+		$fpdf::SetXY(10,10);
+		$fpdf::Cell(340,32,"",1,0,'C');
+		$fpdf::SetFont('Arial','',12);
+		$fpdf::SetXY(310,10);
+		$fpdf::Cell(40,8.3,"SI-FRT-000",1,1,'C');
+		$equipos=Equipos::find($mantenimiento->equipos_id);
+		$fpdf::Cell(340,8,"Formato De Mantenimiento ",0,1,'C');
+		$fpdf::Cell(340,8,$equipos->numplaca,0,1,'C');
+		$fpdf::Ln();
+		$fpdf::SetFont('Arial','',10);
+		$fpdf::Cell(85,8,"FECHA DE MANTENIMIENTO",1,0,'C');
+		$fpdf::Cell(85,8,$mantenimiento->fecha,1,0,'C');
+		$fpdf::Cell(85,8,"NOMBRE RESPONSABLE MANTENIMIENTO",1,0,'C');
+		$fpdf::Cell(85,8,$usuarios->name,1,1,'C'); 
+		$fpdf::Cell(85,8,"NUMERO PLACA",1,0,'C');
+		$fpdf::Cell(85,8,$equipo->numplaca,1,0,'C');
+		$fpdf::Cell(85,8,"RESPONSABLE DEL EQUIPO",1,0,'C');
+		$fpdf::Cell(85,8,$empleados->priape." ".$empleados->prinom,1,1,'C');
+		foreach($localizacion as $mlocali){
+			$departamentos=Departamentos::find($mlocali->departamentos_id);
+			$dependencias=Dependencias::find($mlocali->dependencias_id);
+			$fpdf::Cell(85,8,"DEPARTAMENTO",1,0,'C');
+			$fpdf::Cell(85,8,$departamentos->nombre,1,0,'C');
+			$fpdf::Cell(85,8,"DEPENDENCIA",1,0,'C');
+			$fpdf::Cell(85,8,$dependencias->nombre,1,1,'C');
+		}
+			$x="";
+			$y="";
+			$w="";
+			$nombre="";
+			switch($equipos->tipequipo_id){
+				case 1:
+					$x="X";
+					break;
+				case 2:
+					$w="X";
+					break;
+				case 3:
+					$y="X";
+					break;
+				default:
+					$tipequip=Tipequipo::find($equipos->tipequipo_id);
+					$nombre=$tipequip->nombre;
+					break;
+			}
+			$fpdf::Cell(42.5,8,"PC DE ESCRITORIO",1,0,'C');
+			$fpdf::Cell(42.5,8,$x,1,0,'C');
+			$fpdf::Cell(42.5,8,"PORTATIL",1,0,'C');
+			$fpdf::Cell(42.5,8,$y,1,0,'C');
+			$fpdf::Cell(42.5,8,"IMPRESORA",1,0,'C');
+			$fpdf::Cell(42.5,8,$w,1,0,'C');
+			$fpdf::Cell(36.5,8,"OTROS",1,0,'C');
+			$fpdf::Cell(48.5,8,$nombre,1,1,'C');
+		$modelequ=Modelequi::find($equipos->modelequi_id);
+		$fpdf::Cell(85,8,"MODELO",1,0,'C');
+		$fpdf::Cell(85,8,$modelequ->nombre,1,0,'C');
+		$fpdf::Cell(85,8,"SERIAL",1,0,'C');
+		$fpdf::Cell(85,8,$equipos->serial,1,1,'C');
+		$fpdf::Cell(68,8,"TIPO MANTENIMIENTO",1,0,'C');
+		$p="";
+		$c="";
+		switch($mantenimiento->tipmante_id){
+			case 1:
+				$p="X";
+				break;
+			case 2:
+				$c="X";
+				break;
+			case 3:
+				$p="X";
+				$c="X";
+				break;
+		}
+		$fpdf::Cell(68,8,"PREVENTIVO",1,0,'C');
+		$fpdf::Cell(68,8,$p,1,0,'C');
+		$fpdf::Cell(68,8,"CORRECTIVO",1,0,'C');
+		$fpdf::Cell(68,8,$c,1,1,'C');
+		$fpdf::Cell(340,8,"DESCRIPCION",1,1,'C');
+		foreach($detmantenimiento as $mdet){
+			$fpdf::MultiCell(340,8,$mdet->descripcion,1,'J');
+		}
+		/**poner D */
+		$fpdf::Output('');
+		exit; 
 	}
 	public function componentes(Request $request){
 		if($request->ajax()){
