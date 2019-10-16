@@ -24,7 +24,7 @@
                     <tr>
                         <td>{{ $mcro->id }}</td>
                         <td>{{ $mcro->nombre }}</td>
-                        <td><button class="btn btn-success" onclick="agregar({{ $mcro->id }})" data-toggle="tooltip" data-placement="left" title="Agregar"><i class="fa fa-plus-square"></i></button><button class="btn btn-warning" onclick="editar({{ $mcro->id }})" data-toggle="tooltip" data-placement="left" title="Editar"><i class="fa fa-edit"></i></button><button class="btn btn-danger" onclick="eliminar({{ $mcro->id }})" data-toggle="tooltip" data-placement="right" title="Eliminar"><i class="fa fa-trash"></i></button><a href="{{ url("/Cronomantenimiento/reporte/$mcro->id") }}" class="btn btn-info">s</a>
+                        <td><button class="btn btn-success" onclick="agregar({{ $mcro->id }})" data-toggle="tooltip" data-placement="left" title="Agregar"><i class="fa fa-plus-square"></i></button><button class="btn btn-warning" onclick="editar({{ $mcro->id }})" data-toggle="tooltip" data-placement="left" title="Editar"><i class="fa fa-edit"></i></button><button class="btn btn-danger" onclick="eliminar({{ $mcro->id }})" data-toggle="tooltip" data-placement="right" title="Eliminar"><i class="fa fa-trash"></i></button><a class="btn  btn-info" href='/Cronomantenimiento/reporte/{{ $mcro->id }}'><i class='fa fa-file-pdf-o'></i></a></td>
                         </td>
                     </tr>
                 @endforeach

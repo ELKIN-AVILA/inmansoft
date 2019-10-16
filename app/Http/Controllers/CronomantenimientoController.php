@@ -131,11 +131,13 @@ class CronomantenimientoController extends Controller
         }
     }
     public function reporte(Request $request){
-            //$id=$request->id;
-            $id=1;
+            $id=$request->id;
+            $crono=Cronomantenimiento::where('id','=',$id)->get();
+            
             $fpdf = new Fpdf();
             $fpdf::AddPage('L','Legal');
             $fpdf::SetFont('Arial','B',16);
+            $fpdf::SetTitle("CRONOGRAMA MANTENIMIENTO DE EQUIPOS",true);
             $fpdf::Image('img/camara.png',40,10,32);
             $fpdf::SetXY(10,10);
             $fpdf::Cell(340,30,"",1,0,'C');
@@ -155,7 +157,6 @@ class CronomantenimientoController extends Controller
             $fpdf::Cell(78.75,5,'',1,0,'C'); 
             $fpdf::Cell(52.5,5,'CARGO',1,0,'C'); 
             $fpdf::Cell(78.75,5,'',1,0,'C'); 
-            $crono=Cronomantenimiento::where('id','=',$id)->get();
             $fpdf::Cell(40.2,5,utf8_decode('FECHA GENERACIÓN'),1,0,'C'); 
             $fechge="";
             foreach($crono as $mcro){
@@ -183,12 +184,12 @@ class CronomantenimientoController extends Controller
                 $sede=Sede::find($mdet->sede_id);
                 $departamento=Departamentos::find($mdet->departamentos_id);
                 $dependencias=Dependencias::find($mdet->dependencias_id);
-                $jefe=Jefedependencia::where('dependencias_id','=',$dependencias->id);
+                $jefe=Jefedependencia::where('dependencias_id','=',$dependencias->id)->get();
                 $nomb="";
                 foreach($jefe as $mjefe){
                     $empleados=Empleados::where('id','=',$mjefe->empleados_id)->get();
                     foreach($empleados as $memple){
-                        $nomb=$memple->priape;
+                        $nomb=$memple->priape." ".$memple->prinom;
                     }
                 }
                 $crono=Cronomantenimiento::find($mdet->cronomantemiento_id);

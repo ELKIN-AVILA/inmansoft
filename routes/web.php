@@ -132,7 +132,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post('/Cronomantenimiento/guardardet','CronomantenimientoController@guardardet');
         Route::post('/Cronomantenimiento/traernombre','CronomantenimientoController@traernombre');
         Route::post('/Cronomantenimiento/traerjefe','CronomantenimientoController@traerjefe');
-        Route::get('/Cronomantenimiento/reporte','CronomantenimientoController@reporte');
+        Route::get('/Cronomantenimiento/reporte/{id}','CronomantenimientoController@reporte');
        
         /*jefe departamentos*/        
         Route::get('/Jefedependencia','JefedependenciasController@index');
