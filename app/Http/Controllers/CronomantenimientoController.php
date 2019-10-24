@@ -13,7 +13,7 @@ use App\Jefedependencia;
 use App\Empleados;
 use App\Localizacion;
 use App\Mantenimiento;
-
+use App\user;
 use  Anouar\Fpdf\Facades\Fpdf as Fpdf;
 
 class CronomantenimientoController extends Controller
@@ -78,6 +78,33 @@ class CronomantenimientoController extends Controller
             return response()->json(['cronomantenimiento'=>$cronomantenimiento,'detcrono'=>$detcronomantenimiento,'nomsede'=>$nomsede,'nomdepart'=>$nomdepart,'nomdepen'=>$nombredependencias]);
         }
     }
+    public function editar(Request $request){
+        if($request->ajax()){
+            $cronomantenimiento=Cronomantenimiento::where('id','=',$request->id)->get();
+            return response()->json($cronomantenimiento);
+
+        }
+    }
+    public function actualizar(Request $request){
+        if($request->ajax()){
+            $cronomantenimiento=Cronomantenimiento::where('id','=',$request->id)->update(['nombre'=>$request->nombre]);
+            return response()->json("Se actualizo el nombre del cronograma");
+        }
+    }
+    public function eliminar(Request $request){
+        if($request->ajax()){
+            $detcrono=Detcronomantenimiento::where('cronomantenimiento_id','=',$request->id)->get();
+            $band="";
+            if(is_null($detcrono)){
+                $band="false";
+                $cronomantenimiento=Cronomantenimiento::find($request->id);
+                $cronomantenimiento->delete();            
+            }else{
+                $band="true";
+            }
+            return response()->json(['val'=>$band]);
+        }
+    }
     public function guardardet(Request $request){
         if($request->ajax()){
             $numequipo=Localizacion::where('sede_id','=',$request->sede)->where('departamentos_id','=',$request->departamentos)->where('dependencias_id','=',$request->dependencias)->get();
@@ -98,7 +125,7 @@ class CronomantenimientoController extends Controller
             foreach($cronomantenimiento as $mcron){
                 $cronofecha=$mcron->fecha;
             }
-            /**ini mantenimiento disparador*/
+            /**ini mantenimiento disparador*//**preguntar  si solo dejamos por defecto el mantenimiento de los pc */
            foreach($numequipo as $mmant){
                 $mantenim=new Mantenimiento();
                 $mantenim->fecha=$cronofecha;
@@ -109,7 +136,7 @@ class CronomantenimientoController extends Controller
                 $mantenim->save();
                 /**fin */
            }
-            return response()->json("");
+            return response()->json("Se creo el registro");
 
         }
     }
@@ -152,9 +179,14 @@ class CronomantenimientoController extends Controller
             $fpdf::SetFont('Arial','B',16);    
             $fpdf::Cell(315,20,'CRONOGRAMA MANTENIMIENTO DE EQUIPOS',0,1,'C');
             $fpdf::SetXY(10,35);
+            $idus="";
+            foreach($crono as $mcro){
+                $idus=$mcro->usuarios_id;
+            }
+            $usuarios=User::find($idus);
             $fpdf::SetFont('Arial','',10);
             $fpdf::Cell(26.2,5,'AUTOR',1,0,'L');
-            $fpdf::Cell(78.75,5,'',1,0,'C'); 
+            $fpdf::Cell(78.75,5,$idus->name,1,0,'C'); 
             $fpdf::Cell(52.5,5,'CARGO',1,0,'C'); 
             $fpdf::Cell(78.75,5,'',1,0,'C'); 
             $fpdf::Cell(40.2,5,utf8_decode('FECHA GENERACIÓN'),1,0,'C'); 

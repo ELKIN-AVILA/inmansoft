@@ -9,11 +9,8 @@
 <script src="{{ asset('/js/daterangepicker.js') }}"></script>
 <script src="{{ asset('/js/notify.js') }}"></script>
 <!-- js fileinput-->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/4.4.7/js/fileinput.js" type="text/javascript"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/4.4.7/themes/fa/theme.js" type="text/javascript"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" type="text/javascript"></script>
-  
-<!-- the main fileinput plugin file -->
+<script src="{{ asset('/js/file/bootstrap-fileinput.js') }}"></script>
+
 <script>
 var _token=$('input[name=_token]').val();   
 </script>

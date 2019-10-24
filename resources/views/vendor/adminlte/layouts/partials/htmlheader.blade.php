@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="/css/daterangepicker.css">
 
     <!--fileinput-->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/4.4.7/css/fileinput.css" media="all" rel="stylesheet" type="text/css"/>
+    <link rel="stylesheet" href="{{ asset('/css/file/bootstrap-fileinput.css')}}">
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->

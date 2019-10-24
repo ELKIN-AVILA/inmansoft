@@ -9,7 +9,7 @@ use App\Tipequipo;
 use App\Marcaequi;
 use App\Modelequi;
 use App\Proveedores;
-use Barryvdh\DomPDF\Facade as PDF;
+use  Anouar\Fpdf\Facades\Fpdf as Fpdf;
 
 class EquiposController extends Controller
 {
@@ -60,8 +60,66 @@ class EquiposController extends Controller
     }
     public function pdf(){
         $equipos=Equipos::all();
-        $pdf = PDF::loadView('Pdf.equipos',['equipos'=>$equipos]);
-        return $pdf->download('equipos.pdf');/**poner download / stream */
+        $fpdf = new Fpdf();
+		$fpdf::AddPage('L','Legal');
+		$fpdf::SetFont('Arial','B',16);
+		$fpdf::SetTitle("Formato de Mantenimiento Equipo-",true);
+		$fpdf::Image('img/camara.png',40,13,32);
+		$fpdf::SetXY(10,10);
+		$fpdf::Cell(340,32,"",1,0,'C');
+		$fpdf::SetFont('Arial','',12);
+		$fpdf::SetXY(310,10);
+        $fpdf::Cell(40,8.3,"SI-FRT-000",1,1,'C');
+        $fpdf::Cell(340,8,"Inventario de Equipos Electronicos",0,1,'C');
+        $fpdf::Ln();
+        $fpdf::Ln();
+        $fpdf::Cell(34,8,"Numero Placa",1,0,'C');
+        $fpdf::Cell(26,8,"Estado",1,0,'C');
+        $fpdf::Cell(42,8,"Tipo Equipo",1,0,'C');
+        $fpdf::Cell(34,8,"Marca Equipo",1,0,'C');
+        $fpdf::Cell(34,8,"Modelo Equipo",1,0,'C');
+        $fpdf::Cell(34,8,"Serial",1,0,'C');
+        $fpdf::Cell(34,8,"Fecha Compra",1,0,'C');
+        $fpdf::Cell(34,8,"Valor Compra",1,0,'C');
+        $fpdf::Cell(34,8,"Fecha Egreso",1,0,'C');
+        $fpdf::Cell(34,8,"Proveedor",1,1,'C');
+        $fpdf::SetFont('Arial','',9);
+        foreach($equipos as $mequi){
+            $fpdf::Cell(34,8,$mequi->numplaca,1,0,'C');
+            $fpdf::Cell(26,8,$mequi->estado,1,0,'C');
+            $tipequipo=Tipequipo::all();
+            foreach($tipequipo as $mtip){
+                if($mtip->id==$mequi->tipequipo_id){
+                    $fpdf::Cell(42,8,$mtip->nombre,1,0,'C');
+                }
+            }
+            $marcaequi=Marcaequi::all();
+            foreach($marcaequi as $mmarca){
+                if($mequi->marcaequi_id==$mmarca->id){
+                    $fpdf::Cell(34,8,$mmarca->nombre,1,0,'C');
+                }
+            }
+            $modelequi=Modelequi::all();
+            foreach($modelequi as $mmodele){
+                if($mmodele->id == $mequi->modelequi_id){
+                    $fpdf::Cell(34,8,$mmodele->nombre,1,0,'C');
+                }
+            }
+            $fpdf::Cell(34,8,$mequi->serial,1,0,'C');
+            $fpdf::Cell(34,8,$mequi->fechacompra,1,0,'C');
+            $fpdf::Cell(34,8,number_format($mequi->valcompra,2,'.',''),1,0,'C');
+            $fpdf::Cell(34,8,$mequi->fechaegre,1,0,'C');
+            $proveedores=Proveedores::all();
+            foreach($proveedores as $mpro){
+                if($mpro->id==$mequi->proveedores_id){
+                    $fpdf::Cell(34,8,$mpro->razonsoc,1,1,'C');
+                }
+            }
+        }
+
+		/**poner D */
+		$fpdf::Output('');
+		exit;
     }
     public function informacion(Request $request){
         if($request->ajax()){

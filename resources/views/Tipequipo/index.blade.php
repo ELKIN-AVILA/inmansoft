@@ -21,6 +21,7 @@
             </thead>
             <tbody>
                 @foreach($tipequipo as $mtip)
+			
                     <tr>
                         <td>{{ $mtip->id }}</td>
                         <td>{{ $mtip->nombre }}</td>

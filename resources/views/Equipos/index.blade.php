@@ -11,9 +11,12 @@
 @section('main-content')
 	<div class="form-group">
         <button class="btn btn-primary" onclick="nuevo();">Nuevo</button>
+        <a href="{{ route('equipos.pdf') }}" class="btn btn-sm btn-danger">
+                <i class="fa fa-file-pdf-o"></i>
+        </a>
         <a href="{{ route('equipos.pdf') }}" class="btn btn-sm btn-success">
-                Generar reporte Equipos
-        </a>    
+            <i class="fa fa-file-excel-o"></i>
+        </a>     
     </div>
     <div class="row">
         @foreach($equipos as $mequi)

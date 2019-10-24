@@ -187,8 +187,8 @@
 										<textarea name="descripcionmante" id="descripcionmante" cols="30" rows="10"></textarea>
 									</div>
 								</div>
-								
 							</div>
+							
 							<div class="col-sm-12 md-2" style="text-align:end">
 								<button class="btn btn-success">Guardar</button>
 							</div>
@@ -213,23 +213,16 @@
 				<div class="modal-body">
 					<input type="hidden" name="idequifotos" id="idequifotos">
 					<div class="row">
-							<div class="container">
-									<div class="row">
-											<div class="form-group">
-													<div class="file-loading">
-														<input id="file-1" type="file" name="file" multiple class="file" data-overwrite-initial="false" data-min-file-count="2">
-													</div>
-												</div>
-									</div>
-							</div>
+							
 					</div>
 				</div>
 				
 			  </div>
 			  
 			</div>
-		  </div>	
-	<!-- end modal fotos-->
+		  </div>
+
+		 <!-- end modal fotos-->
 	<!-- mantenimiento new-->
 	
     <div class="modal fade" id="nuevoman" role="dialog">

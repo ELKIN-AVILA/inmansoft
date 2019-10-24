@@ -9,6 +9,7 @@
 @endsection
 
 @section('main-content')
+
     <div class="form-group">
         <button class="btn btn-primary" onclick="nuevo();">Nuevo</button>
     </div>
@@ -54,7 +55,7 @@
             </tbody>
         </table>
     <!--end Table -->
-
+       
     <div class="modal fade" id="nuevo" role="dialog">
         <div class="modal-dialog">
           <div class="modal-content">
@@ -104,7 +105,7 @@
                        <div class="col-sm-8">
                            <select name="equipos_id" id="equipos_id" class="form-control required">
                                <option value="">---Selecione---</option>
-                               @foreach($equipos as $mequip)
+                               @foreach($equi as $mequip)
                                     <option value="{{ $mequip->id }}">{{ $mequip->numplaca }}</option>
                                @endforeach
                            </select>

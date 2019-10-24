@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use App\Localizacion;
 use App\Departamentos;
 use App\Dependencias;
@@ -16,8 +17,9 @@ class LocalizacionController extends Controller
         $departamentos=Departamentos::all();
         $dependencias=Dependencias::all();
         $equipos=Equipos::all();
+        $equi=DB::table('equipos')->leftJoin('localizacion','equipos.id','=','localizacion.equipos_id')->select('equipos.id','equipos.numplaca')->whereNull('localizacion.id')->get();
         $sede=Sede::all();
-        return view('Localizacion.index',['localizacion'=>$localizacion,'departamentos'=>$departamentos,'dependencias'=>$dependencias,'equipos'=>$equipos,'sedes'=>$sede]);
+        return view('Localizacion.index',['equi'=>$equi,'localizacion'=>$localizacion,'departamentos'=>$departamentos,'dependencias'=>$dependencias,'equipos'=>$equipos,'sedes'=>$sede]);
     }
     public function guardar(Request $request){
         if($request->ajax()){

@@ -18,6 +18,7 @@
                 <th>#</th>
                 <th>Nombre</th>
                 <th>Departamento</th>
+                <th>Sede</th>
                 <th>Acciones</th>
             </thead>
             <tbody>
@@ -28,6 +29,16 @@
                         @foreach($departamentos as $mdepar)
                             @if($mdepar->id == $mde->departamentos_id)
                                 <td>{{ $mdepar->nombre}}</td>
+                            @endif
+                        @endforeach
+                        @foreach ($departamentos as $mdep)
+                            @if($mdep->id == $mde->departamentos_id)
+                                @foreach($sede as $msede)
+                                    @if($msede->id==$mdep->sede_id)
+                                        <td>{{ $msede->nombre}}</td>
+
+                                    @endif
+                                @endforeach
                             @endif
                         @endforeach
                         <td><button class="btn btn-warning" onclick="editar({{ $mde->id }})" data-toggle="tooltip" data-placement="left" title="Editar"><i class="fa fa-edit"></i></button><button class="btn btn-danger" onclick="eliminar({{ $mde->id }})" data-toggle="tooltip" data-placement="right" title="Eliminar"><i class="fa fa-trash"></i></button></td>

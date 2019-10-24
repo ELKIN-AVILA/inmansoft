@@ -156,6 +156,37 @@
       </div>
     <!-- add crono -->
 
+    <div class="modal fade" id="editar" role="dialog">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal">&times;</button>
+                  <h4 class="modal-title">Editar Cronograma de Mantenimiento</h4>
+                </div>
+                <form action="" id="formularioedi">
+                <div class="modal-body">
+                    <input type="hidden" name="idcronoedit" id="idcronoedit">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="col-sm-4">
+                                <label for="">Nombre:</label>
+                            </div>
+                            <div class="col-sm-8">
+                                <input type="text" name="nombreedi" id="nombreedi" class="form-control"> 
+                            </div>
+                        </div>
+                        
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-success" type="submit">Guardar</button>
+                </div>
+                </form>
+              </div>
+              
+            </div>
+          </div>
+          <!-- end edit-->
     <!-- end crono-->
 
 @endsection
@@ -163,5 +194,5 @@
 @section('script')
 
 <script src="{{ asset('/js/Cronomantenimiento/index.js') }}" type="text/javascript"></script>
-<script src="{{ asset('/js/notify.js') }}" type="text/javascript"></script>
+
 @endsection

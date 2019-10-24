@@ -42,7 +42,8 @@
             </tbody>
         </table>
     <!--end Table -->
-
+   
+        
     <div class="modal fade" id="nuevo" role="dialog">
         <div class="modal-dialog">
           <div class="modal-content">
@@ -60,12 +61,14 @@
                                 <div class="col-sm-8">
                                     <select name="equipos_id" id="equipos_id" class="form-control">
                                         <option value="">---Selecione---</option>
-                                        @foreach($equipos as $mequi)
+                                        @foreach($equi as $mequi)
+
                                             <option value="{{ $mequi->id }}">{{ $mequi->numplaca }}</option>
                                         @endforeach
                                     </select>
                                 </div>
                             </div>
+                            
                             <div class="col-sm-12">
                                 <div class="col-sm-4">
                                     <label for="">Responsable:</label>
@@ -74,7 +77,7 @@
                                     <select name="empleados_id" id="empleados_id" class="form-control">
                                         <option value="">---Selecione---</option>
                                         @foreach($empleados as $mres)
-                                            <option value="{{ $mres->id }}">{{ $mres->priape }}</option>
+                                            <option value="{{ $mres->id }}">{{ $mres->priape }} </option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -94,13 +97,12 @@
     <!--fin modal nuevo -->
       <!-- modal edit -->
 
-
     <div class="modal fade" id="editar" role="dialog">
         <div class="modal-dialog">
           <div class="modal-content">
             <div class="modal-header">
               <button type="button" class="close" data-dismiss="modal">&times;</button>
-              <h4 class="modal-title">Editar Proveedor</h4>
+              <h4 class="modal-title">Editar Responsable</h4>
             </div>
             <form action="" id="formularioedi">
                 <div class="modal-body">
@@ -111,7 +113,7 @@
                                         <label for="">Equipo:</label>
                                     </div>
                                     <div class="col-sm-8">
-                                        <select name="equipos_idedi" id="equipos_idedi" class="form-control">
+                                        <select  name="equipos_idedi" id="equipos_idedi" class="form-control" disabled>
                                             <option value="">---Selecione---</option>
                                             @foreach($equipos as $mequi)
                                                 <option value="{{ $mequi->id }}">{{ $mequi->numplaca }}</option>

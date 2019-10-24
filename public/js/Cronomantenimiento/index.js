@@ -1,10 +1,6 @@
-
 $(document).ready(function(){
     var fechaini;
     var fechafin;
-    $('#date_range').daterangepicker({
-        
-    });
 
     $('#date_range').on('apply.daterangepicker', function(ev, picker) {
         fechaini=picker.startDate.format('YYYY-MM-DD');
@@ -54,7 +50,13 @@ $(document).ready(function(){
                     'fcf':fcf
                 },
                 success:function(data){
-                    location.reload();
+                    alertify.success(data);
+                    $("#sede_id").val(" ");
+                    $("#departamentos_id").val(" ");
+                    $("#idjefe").val(" ");
+                    $("#jefedepar").val(" ");
+                    $("#dependencias_id").val(" ");
+                    agregar(id);
                 }
             });
         
@@ -82,10 +84,74 @@ $(document).ready(function(){
             });
         }
     });
+    $("#formularioedi").validate({
+        rules:{
+            nombreedi:{
+                required:true
+            }
+        },
+        submitHandler:function(){
+            var id=$("#idcronoedit").val();
+            var nombre=$("#nombreedi").val();
+            
+            $.ajax({
+                type:'POST',
+                url:'/Cronomantenimiento/actualizar',
+                data:{
+                    '_token':_token,
+                    'id':id,
+                    'nombre':nombre
+                },
+                success:function(data){
+                    alertify.success(data);
+                    $("#editar").modal("hide"); 
+                    location.reload();
+                }
+            });
+        }
+    })
 });
 
+function actualizar(){
+            
+}
 function nuevo(){
     $("#nuevo").modal("show");
+}
+function editar(id){
+    $.ajax({
+        type:'POST',
+        url:'/Cronomantenimiento/editar',
+        data:{
+            '_token':_token,
+            'id':id
+        },
+        success:function(data){
+            data.forEach(ele=>{
+                $("#idcronoedit").val(ele.id);
+                $("#nombreedi").val(ele.nombre);
+            });
+            $("#editar").modal("show");
+
+        }
+    });
+}
+function eliminar(id){
+    $.ajax({
+        type:'POST',
+        url:'/Cronomantenimiento/eliminar',
+        data:{
+            '_token':_token,
+            'id':id
+        },
+        success:function(data){
+            if(data.val=="false"){
+                alertify.success("Se elimino el cronograma");
+            }else{
+                alertify.error("No Se puede eliminar el cronograma ya que tiene proceso asociados");
+            }
+        }
+    })
 }
 function agregar(id){
     $("#tablecr").empty();

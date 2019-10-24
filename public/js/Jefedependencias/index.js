@@ -92,6 +92,7 @@ function depart(id){
             'id':val
         },
         success:function(data){
+                $("#departamentos_id").append("<option value=''>----Seleccione---</option>");
             data.forEach(element => {
                 $("#departamentos_id").append("<option value="+element.id+">"+element.nombre+"</option>")
             });
@@ -110,8 +111,9 @@ function dependencias(id){
             'id':val
         },
         success:function(data){
+                $("#dependencias_id").append("<option value=''>----Seleccione---</option>");
             data.forEach(element => {
-                $("#dependencias_id").append("<option value="+element.id+">"+element.nombre+"</option>")
+                $("#dependencias_id").append("<option value="+element.id+">"+element.nombre+"</option>");
             });
         }
     });

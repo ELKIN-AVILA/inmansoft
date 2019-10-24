@@ -9,7 +9,8 @@ use App\Tipequipo;
 class TipequipoController extends Controller
 {
     public function index(){
-        $tipequipo=Tipequipo::all();
+	    $cont=Tipequipo::all()->count();
+        $tipequipo=DB::table('tipequipo')->whereBetween('id',[1,$cont+1])->get();
         return view('Tipequipo.index',['tipequipo'=>$tipequipo]);
     }
     public function guardar(Request $request){

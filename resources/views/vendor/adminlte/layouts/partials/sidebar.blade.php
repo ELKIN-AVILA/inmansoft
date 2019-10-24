@@ -77,6 +77,18 @@
 
                     </ul> 
             </li>
+
+            <li class="treeview">
+                <a href="#"><i class="fa fa-cogs"></i><span>Reportes</span><i class="fa fa-angle-left pull-right"></i></a>
+                <ul class="treeview-menu">
+                        <li><a href="{{ url('/Tipcomponente') }}"><span>Tipo de Componentes</span></a></li>
+                        <li><a href="{{ url('/Componentes') }}"><span>Componentes</span></a></li>
+                        <li><a href="{{ url('/Tipmante') }}"><span>Tipo de Mantenimiento</span></a></li>
+                        <li><a href="{{ url('/Programas') }}"><span>Programas</span></a></li>
+                        <li><a href="{{ url('/Cronomantenimiento') }}"><span>Cronograma Mantenimiento</span></a></li>
+
+                </ul> 
+            </li>
             <li class="treeview">
                 <a href="#"><i class="fa fa-cogs"></i><span>Configuraciones</span><i class="fa fa-angle-left pull-right"></i></a>
                 <ul class="treeview-menu">

@@ -1,20 +1,5 @@
 $(document).ready(function(){
-    $("#file-1").fileinput({
-        theme: 'fa',
-        uploadUrl: "/image-view",
-        uploadExtraData: function() {
-            return {
-                _token: $("input[name='_token']").val(),
-            };
-        },
-        allowedFileExtensions: ['jpg', 'png', 'gif'],
-        overwriteInitial: false,
-        maxFileSize:2000,
-        maxFilesNum: 10,
-        slugCallback: function (filename) {
-            return filename.replace('(', '_').replace(']', '_');
-        }
-    });
+
     $("#formulario").validate({
         rules:{
             sede_id:{
@@ -41,17 +26,60 @@ $(document).ready(function(){
                     'dependencias':dependencias_id
                 },
                 success:function(data){
+                    console.log(data);
+                    
                         $("#contenido").empty();
                         var html="";
+                        var cont=-1;
+                        var nmp="";
                         data['equipos'].forEach(element=>{
+                            cont++;
+                            switch(data['tipoequ'][cont]['0']['id']){
+                                case 1:
+                                    nmp="img/pc.png";
+                                    break;
+                                case 2:
+                                    nmp="img/impresora.png";
+                                    break;
+                                case 3:
+                                    nmp="img/portatil.png";
+                                    break;
+                                case 4:
+                                    nmp="img/tv.png";
+                                    break;
+                                case 5:
+                                    nmp="img/scan.png";
+                                    break;
+                                case 6:
+                                    nmp="img/vb.png";
+                                    break;
+                                case 7:
+                                    nmp="img/imprecaja.jpg";
+                                    break;
+                                case 8:
+                                    nmp="img/micropc.png";
+                                    break;
+                                case 9:
+                                    nmp="img/impreradic.jpg";
+                                    break;
+                                case 10:
+                                    nmp="img/imprecard.jpg";
+                                    break;
+                            }
+                           
+                            console.log(data['tipoequ'][cont]['0']['nombre']);
                             html+="<div class='col-sm-4'>";
                             html+="<div class='panel panel-primary'>";
                             html+="<div class='panel-heading'>Numero de placa "+element['0']['numplaca']+"</div>";
-                            html+="<div class='panel-body'>";
+                            html+="<div class='panel-body' style='text-align:center;'>";
+                            html+="<h5 style='text-align:center;'>"+data['tipoequ'][cont]['0']['nombre']+"</h5>";
+                            html+="<img src="+nmp+" style='height:96px;'>";
+                            html+="<div>";
                             html+="<button class='btn btn-success' onclick='programas("+element['0']['id']+")' data-toggle='tooltip' data-placement='top' title='Software'><i class='fa fa-laptop' style='font-size: xx-large'></i></button>";
                             html+="<button class='btn btn-warning' onclick='hardware("+element['0']['id']+")' data-toggle='tooltip' data-placement='top' title='Hardware'><i class='fa fa-wrench' style='font-size: xx-large'></i></button>";
                             html+="<button class='btn btn-info' onclick='hoja("+element['0']['id']+")' data-toggle='tooltip' data-placement='top' title='Hoja de vida'><i class='fa fa-folder-open-o' style='font-size: xx-large'></i></button>";
                             html+="<button onclick='mantenimientos("+element['0']['id']+");' class='btn btn-primary' data-toggle='tooltip' data-placement='top' title='Mantenimiento'><i class='fa fa-cog' style='font-size: xx-large'></i></button>"
+                            html+="</div>";
                             html+="</div>";   
                             html+="</div>";
                             html+="</div>";

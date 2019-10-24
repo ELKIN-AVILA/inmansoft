@@ -14,7 +14,9 @@ class ResponsablesController extends Controller
         $responsables=Responsables::all();
         $empleados=Empleados::all();
         $equipos=Equipos::all();
-        return view('Responsables.index',['empleados'=>$empleados,'equipos'=>$equipos,'responsables'=>$responsables]);
+        $registros=DB::table('empleados')->leftJoin('responsables','empleados.id','=','responsables.empleados_id')->select('empleados.id','empleados.priape','empleados.prinom')->whereNull('responsables.id')->get();
+        $equi=DB::table('equipos')->leftJoin('responsables','equipos.id','=','responsables.equipos_id')->select('equipos.id','equipos.numplaca')->whereNull('responsables.id')->get();
+        return view('Responsables.index',['equi'=>$equi,'empleados'=>$empleados,'equipos'=>$equipos,'responsables'=>$responsables]);
     }
     public function guardar(Request $request){
         if($request->ajax()){
