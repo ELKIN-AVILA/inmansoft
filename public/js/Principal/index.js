@@ -1,5 +1,31 @@
 $(document).ready(function(){
+/**imagenes*/
+$("#file-1").fileinput({
+    theme: 'fa',
+    uploadUrl: "/Casas/fotos",
+    uploadExtraData: function() {
+        return {
+            _token: $("input[name='_token']").val(),
+            id:$("#casasid").val()
+        };
+    },
+    extra:function(){
+        return{id:$("#casasid").val};
+    },
+    allowedFileExtensions: ['jpg', 'png', 'gif'],
+    overwriteInitial: false,
+    maxFileSize:2000,
+    maxFilesNum: 10,
+    slugCallback: function (filename) {
+        return filename.replace('(', '_').replace(']', '_');
+    },
+});
+$('#file-1').on('filebatchuploadcomplete', function(event, files, extra) {
+    $('#file-1').fileinput('clear');
+});
 
+
+/**fin imagenes */
     $("#formulario").validate({
         rules:{
             sede_id:{

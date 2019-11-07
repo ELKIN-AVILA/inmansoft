@@ -186,7 +186,7 @@ class CronomantenimientoController extends Controller
             $usuarios=User::find($idus);
             $fpdf::SetFont('Arial','',10);
             $fpdf::Cell(26.2,5,'AUTOR',1,0,'L');
-            $fpdf::Cell(78.75,5,$idus->name,1,0,'C'); 
+            $fpdf::Cell(78.75,5,$usuarios->name,1,0,'C'); 
             $fpdf::Cell(52.5,5,'CARGO',1,0,'C'); 
             $fpdf::Cell(78.75,5,'',1,0,'C'); 
             $fpdf::Cell(40.2,5,utf8_decode('FECHA GENERACIÓN'),1,0,'C'); 

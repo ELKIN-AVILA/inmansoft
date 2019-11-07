@@ -27,8 +27,8 @@
 									
 									</div>
 									<div class="col-sm-12">
-										<h2>TOTAL DE EQUIPOS</h2>
-										<h1>{{ $nequipos[$ban] }}</h1>
+										<h2 style="text-align: center;">TOTAL DE EQUIPOS</h2>
+										<h1 style="text-align: center;font-size:70px;">{{ $nequipos[$ban] }}</h1>
 									</div>
 								</div>
 							</div>
@@ -213,7 +213,16 @@
 				<div class="modal-body">
 					<input type="hidden" name="idequifotos" id="idequifotos">
 					<div class="row">
-							
+						<div class="col-sm-12">
+                            {!! csrf_field() !!}                            
+                              <h4>Agregar Fotos</h4>
+                            
+                              <div class="form-group">
+                                <div class="file-loading">
+                                    <input id="file-1" type="file" name="file" multiple class="file" data-overwrite-initial="false" data-min-file-count="1">
+                                </div>
+                            </div>
+                        </div>
 					</div>
 				</div>
 				

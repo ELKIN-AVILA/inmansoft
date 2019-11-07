@@ -34,6 +34,7 @@
             <li class="header">{{ trans('adminlte_lang::message.header') }}</li>
             <!-- Optionally, you can add icons to the links -->
             <li class="active"><a href="{{ url('home') }}"><i class='fa fa-home'></i> <span>Principal</span></a></li>
+            @can('menu.admin')
             <li class="treeview">
                     <a href="#"><i class="fa fa-cogs"></i><span>Configuracion Sistema</span><i class="fa fa-angle-left pull-right"></i></a>
                     <ul class="treeview-menu">
@@ -61,7 +62,12 @@
                     <ul class="treeview-menu">
                             <li><a href="{{ url('/Cargo') }}"><span>Crear Cargos</span></a></li>
                             <li><a href="{{ url('/Empleados') }}"><span>Crear Empleados</span></a></li>
-                            <li><a href="{{ url('/Departamentos') }}"><span>Usuarios del sistema</span></a></li>
+                            <li><a href="{{ url('/Roles') }}"><span>Roles</span></a></li>
+                            <li><a href="{{ url('/Permisos') }}"><span>Permisos</span></a></li>
+                            <li><a href="{{ url('/Permisosxrol') }}"><span>Permisos por rol</span></a></li>
+                            <li><a href="{{ url('/Rolxuser') }}"><span>Rol por usuario</span></a></li>
+
+                            <li><a href="{{ url('/Usuarios') }}"><span>Usuarios del sistema</span></a></li>
 
                     </ul> 
             </li>
@@ -81,38 +87,14 @@
             <li class="treeview">
                 <a href="#"><i class="fa fa-cogs"></i><span>Reportes</span><i class="fa fa-angle-left pull-right"></i></a>
                 <ul class="treeview-menu">
-                        <li><a href="{{ url('/Tipcomponente') }}"><span>Tipo de Componentes</span></a></li>
-                        <li><a href="{{ url('/Componentes') }}"><span>Componentes</span></a></li>
-                        <li><a href="{{ url('/Tipmante') }}"><span>Tipo de Mantenimiento</span></a></li>
-                        <li><a href="{{ url('/Programas') }}"><span>Programas</span></a></li>
-                        <li><a href="{{ url('/Cronomantenimiento') }}"><span>Cronograma Mantenimiento</span></a></li>
 
                 </ul> 
             </li>
-            <li class="treeview">
-                <a href="#"><i class="fa fa-cogs"></i><span>Configuraciones</span><i class="fa fa-angle-left pull-right"></i></a>
-                <ul class="treeview-menu">
-                    <li><a href="{{ url('/Departamentos') }}"><span>Departamentos</span></a></li>
-                    <li><a href="{{ url('/Dependencias') }}"><span>Dependencias</span></a></li>
-                    <li><a href="{{ url('/Marcaequi') }}"><span>Marca Equipo</span></a></li>
-                    <li><a href="{{ url('/Modelequi') }}"><span>Modelo de Equipo</span></a></li>
-                    <li><a href="{{ url('/Tipequipo') }}"><span>Tipo de  Equipo</span></a></li>
-                    <li><a href="{{ url('/Cargo') }}"><span>Cargos</span></a></li>
-                    <li><a href="{{ url('/Proveedores') }}"><span>Proveedores</span></a></li>
-                    <li><a href="{{ url('/Equipos') }}"><span>Equipos</span></a></li>
-                    <li><a href="{{ url('/Empleados') }}"><span>Empleados</span></a></li>
-                    <li><a href="{{ url('/Responsables') }}"><span>Responsables Equipo</span></a></li>
-                    <li><a href="{{ url('/Sedes') }}"><span>Sedes</span></a></li>
-                    <li><a href="{{ url('/Localizacion') }}"><span>Localizacion</span></a></li>
-                    <li><a href="{{ url('/Cronomantenimiento') }}"><span>Cronograma de Mantenimiento</span></a></li>
-                    <li><a href="{{ url('/Jefedependencia') }}"><span>Jefe dependencias</span></a></li>
-                    <li><a href="{{ url('/Programas') }}"><span>Programas</span></a></li>
-                    <li><a href="{{ url('/Componentes') }}"><span>Componentes</span></a></li>
-                    <li><a href="{{ url('/Tipcomponente') }}"><span>Tipo de Componentes</span></a></li>
-                    <li><a href="{{ url('/Tipmante') }}"><span>Tipo de Mantenimiento</span></a></li>
-
-                </ul>   
+             
             </li>
+            @else
+
+            @endcan
         </ul><!-- /.sidebar-menu -->
     </section>
     <!-- /.sidebar -->

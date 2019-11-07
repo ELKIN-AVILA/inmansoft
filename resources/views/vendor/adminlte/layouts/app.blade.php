@@ -23,7 +23,7 @@ desired effect
 |               | sidebar-mini                            |
 |---------------------------------------------------------|
 -->
-<body class="skin-red sidebar-mini">
+<body class="skin-yellow sidebar-mini">
 <div id="app">
     <div class="wrapper">
 

@@ -5,12 +5,9 @@
 @endsection
 
 @section('content')
-<body class="hold-transition login-page">
+<body class="hold-transition login-page" style="background:#f39c12;">
     <div id="app">
         <div class="login-box">
-            <div class="login-logo">
-                <a href="{{ url('/home') }}"><b>INMANSOFT</b></a>
-            </div><!-- /.login-logo -->
 
         @if (count($errors) > 0)
             <div class="alert alert-danger">
@@ -23,10 +20,17 @@
             </div>
         @endif
 
-        <div class="login-box-body">
+        <div class="login-box-body" style="border-radius:40px">
+	
+            <div class="login-logo">
+                <a href="{{ url('/home') }}" style="color:#f39c12;"><b>INMANSOFT</b></a>
+            </div><!-- /.login-logo -->
+	    <img />
         <form action="{{ url('/login') }}" method="post">
-            <input type="hidden" name="_token" value="{{ csrf_token() }}">
-            <div class="form-group has-feedback">
+	    
+	   <input type="hidden" name="_token" value="{{ csrf_token() }}">
+	   
+	  <div class="form-group has-feedback">
                 <input type="email" class="form-control" placeholder="{{ trans('adminlte_lang::message.email') }}" name="email"/>
                 <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
             </div>
@@ -38,7 +42,7 @@
                 <div class="col-xs-8">
                     <div class="checkbox icheck">
                         <label>
-                            <input type="checkbox" name="remember"> {{ trans('adminlte_lang::message.remember') }}
+                            <input type="checkbox" name="remember"> Recordar
                         </label>
                     </div>
                 </div><!-- /.col -->
@@ -49,9 +53,6 @@
         </form>
 
 
-      <!--  <a href="{{ url('/password/reset') }}">{{ trans('adminlte_lang::message.forgotpassword') }}</a><br>
-        <a href="{{ url('/register') }}" class="text-center">{{ trans('adminlte_lang::message.registermember') }}</a>
-      -->
     </div><!-- /.login-box-body -->
 
     </div><!-- /.login-box -->

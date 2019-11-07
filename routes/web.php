@@ -172,4 +172,28 @@ Route::group(['middleware' => 'auth'], function () {
         /**Imagenes */
         Route::get('/imagenes','ImagenesController@index');
         Route::post('/imagenes.upload',['as'=>'imagenes.upload','uses'=>'ImagenesController@uploadImages']);
+        /*Admininstracion roles y usuarios*/
+        Route::get('/Roles','RolesController@index');
+        Route::post('/Roles/guardar','RolesController@guardar');
+
+        /**Permisos */
+        Route::get('/Permisos','PermisosController@index');
+        Route::post('/Permisos/guardar','PermisosController@guardar');
+
+        /**Permisosxrol */
+        Route::get('/Permisosxrol','PermisosxrolController@index');
+        Route::post('/Permisosxrol/asignar','PermisosxrolController@asignar');
+        /**Rolxuser */
+        Route::get('/Rolxuser','RolxuserController@index');
+        Route::post('/Rolxuser/asignar','RolxuserController@asignar');
+
+        /**Usuarios */
+        Route::get('/Usuarios','UsuariosController@index');
+        Route::post('/Usuarios/guardar','UsuariosController@guardar');
+        Route::post('/Usuarios/editar','UsuariosController@editar');
+        Route::put('/Usuarios/actualizar','UsuariosController@actualizar');
+
+
     });
+
+
