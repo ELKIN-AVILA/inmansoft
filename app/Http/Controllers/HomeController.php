@@ -25,6 +25,7 @@ use App\Detmantenimiento;
 use App\Responsables;
 use App\Empleados;
 use App\Modelequi;
+use App\Marcaequi;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use  Anouar\Fpdf\Facades\Fpdf as Fpdf;
@@ -32,7 +33,8 @@ use  Anouar\Fpdf\Facades\Fpdf as Fpdf;
 /**
  * Class HomeController
  * @package App\Http\Controllers
- */
+*/
+
 class HomeController extends Controller
 {
     /**
@@ -426,19 +428,75 @@ class HomeController extends Controller
 			return response()->json(['equipos'=>$equipos,'programas'=>$programas,'versiones'=>$versiones,'componentes'=>$componente,'tipcomponente'=>$tipcomponente]);
 		}
 	}
+
 	public function hojavidareporte(Request $request,$id){
 			$fpdf = new Fpdf();
-            $fpdf::AddPage('L','Legal');
+			$fpdf::AddPage('P','Legal');
             $fpdf::SetFont('Arial','B',16);
             $fpdf::Image('img/camara.png',40,10,32);
             $fpdf::SetXY(10,10);
-            $fpdf::Cell(340,30,"",1,0,'C');
+            $fpdf::Cell(200,30,"",1,0,'C');
             $fpdf::SetFont('Arial','',12);
-            $fpdf::SetXY(310,10);
+            $fpdf::SetXY(170,10);
 			$fpdf::Cell(40,8.3,"SI-FRT-000",1,1,'C');
 			$equipos=Equipos::find($id);
-			$fpdf::Cell(340,8,"Hoja de vida ".$equipos->numplaca,0,1,'C');
-            $fpdf::Output('');
+			$fpdf::SetFont('Arial','B',12);
+			$fpdf::Cell(200,8,"HOJA DE VIDA ",0,1,'C');
+			$fpdf::SetFont('Arial','',12);
+			$fpdf::Ln();
+			$fpdf::SetXY(10,40);
+			$tipoequipo=Tipequipo::find($equipos->tipequipo_id);
+			$marcaequipo=Marcaequi::find($equipos->marcaequi_id);
+			$modelo=Modelequi::find($equipos->modelequi_id);
+			$fpdf::SetFillColor(200,213,216);
+			$fpdf::Cell(80,8,"NUMERO DE PLACA",1,0,'L',1);
+			$fpdf::Cell(120,8,$equipos->numplaca,1,1,'C');
+			$fpdf::Cell(30,8,"TIPO EQUIPO",1,0,'C',1);
+			$fpdf::Cell(70,8,$tipoequipo->nombre,1,0,'C');
+			$fpdf::Cell(50,8,"MARCA EQUIPO",1,0,'C',1);
+			$fpdf::Cell(50,8,$marcaequipo->nombre,1,1,'C');
+			$fpdf::Cell(30,8,"MODELO ",1,0,'C',1);
+			$fpdf::Cell(70,8,$modelo->nombre,1,0,'C');
+			$fpdf::Cell(50,8,"SERIAL",1,0,'C',1);
+			$fpdf::Cell(50,8,$equipos->serial,1,1,'C');
+			$fpdf::SetFillColor(180,240,255);
+			$fpdf::SetFont('Arial','B',12);
+			$fpdf::Cell(200,8,"SOFTWARE DEL EQUIPO",1,1,'C',1);
+			$fpdf::SetFont('Arial','',12);
+			$fpdf::SetFillColor(200,213,216);
+			$fpdf::Cell(100,8,"Programa",1,0,'C',1);
+			$fpdf::Cell(100,8,"Version",1,1,'C',1);
+			$software=Softwarexequipo::where('equipos_id','=',$id)->get();
+			foreach($software as $msof){
+				$version=Versionpro::where('id','=',$msof->versionpro_id)->get();
+				foreach($version as $mver){
+					$programas=Programas::where('id','=',$mver->programas_id)->get();
+					foreach($programas as $mpro){
+						$fpdf::Cell(100,8,$mpro->nombre,1,0,'C');
+						$fpdf::Cell(100,8,$mver->nombre,1,1,'C');
+					}
+				}
+			}
+			$fpdf::SetFillColor(180,240,255);
+			$fpdf::SetFont('Arial','B',12);
+			$fpdf::Cell(200,8,"HARDWARE DEL EQUIPO",1,1,'C',1);
+			$fpdf::SetFont('Arial','',12);
+			$fpdf::SetFillColor(200,213,216);
+			$fpdf::Cell(100,8,"Tipo componente",1,0,'C',1);
+			$fpdf::Cell(100,8,"Componente",1,1,'C',1);
+			$componexequipo=Compoxequipo::where('equipos_id','=',$id)->get();
+			foreach($componexequipo as $mcompoequ){
+				$componente=Componentes::where('id','=',$mcompoequ->componentes_id)->get();
+				foreach($componente as $mcompo){
+					$tipcomponente=Tipcomponente::where('id','=',$mcompo->tipcomponentes_id)->get();
+					foreach($tipcomponente as $mtip){
+						$fpdf::Cell(100,8,$mtip->nombre,1,0,'C');
+						$fpdf::Cell(100,8,$mcompo->nombre,1,1,'C');
+					}
+				}
+			}
+			$fpdf::footer();
+			$fpdf::Output('');
             exit;        
         
 	}

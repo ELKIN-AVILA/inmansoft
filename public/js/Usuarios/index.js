@@ -51,7 +51,7 @@ $(document).ready(function(){
                 data:{
                     '_token':_token,
                     'id':id,
-                    'nombre':nombre
+                    'contrasena':con
                 },
                 success:function(data){
                     alertify.success(data);
