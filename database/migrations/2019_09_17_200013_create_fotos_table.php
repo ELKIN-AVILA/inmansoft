@@ -17,8 +17,8 @@ class CreateFotosTable extends Migration
             $table->bigIncrements('id');
             $table->string('url',100);
             $table->string('observacion',100);
-            $table->unsignedBigInteger('detmantenimiento_id');
-            $table->foreign('detmantenimiento_id')->references('id')->on('detmantenimiento');
+            $table->unsignedBigInteger('mantenimiento_id');
+            $table->foreign('mantenimiento_id')->references('id')->on('mantenimientos');
             $table->timestamps();
         });
     }

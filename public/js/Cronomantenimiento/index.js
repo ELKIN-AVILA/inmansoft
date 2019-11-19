@@ -1,7 +1,9 @@
 $(document).ready(function(){
     var fechaini;
     var fechafin;
+    $('#date_range').daterangepicker({
 
+    });
     $('#date_range').on('apply.daterangepicker', function(ev, picker) {
         fechaini=picker.startDate.format('YYYY-MM-DD');
         fechafin=picker.endDate.format('YYYY-MM-DD');

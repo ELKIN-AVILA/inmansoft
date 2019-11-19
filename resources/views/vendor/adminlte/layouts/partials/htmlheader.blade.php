@@ -8,10 +8,9 @@
     <link href="{{ asset('/css/all.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('/css/alertify.css') }}" rel="stylesheet" type="text/css" />
 
-    <link rel="stylesheet" href="{{ asset('/css/fileinput.css') }}">
     <link rel="stylesheet" href="{{ asset('/css/font-awesome.min.css') }}">
-    <link rel="stylesheet" type="text/css" href="{{ asset('/css/DataTables/datatables.css') }}">
-    <link rel="stylesheet" href="/css/daterangepicker.css">
+    <link rel="stylesheet"   href="{{ asset('/css/DataTables/datatables.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('/css/daterangepicker.css') }}">
 
     <!--fileinput-->
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->

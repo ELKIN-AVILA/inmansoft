@@ -13,6 +13,9 @@
         <button class="btn btn-primary" onclick="nuevo();">Nuevo</button>
     </div>
     <!-- Table-->
+    <div class="panel-success">
+            <div class="panel-heading" style="text-align:center;">Listado de Usuarios</div>
+        
         <table class="table table-bordered" id="datos">
             <thead>
                 <th>#</th>
@@ -30,6 +33,7 @@
                 
             </tbody>
         </table>
+    </div>
     <!--end Table -->
 
     <div class="modal fade" id="nuevo" role="dialog">

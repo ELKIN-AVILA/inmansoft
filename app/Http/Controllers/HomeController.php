@@ -6,6 +6,9 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use  Anouar\Fpdf\Facades\Fpdf as Fpdf;
 use App\User;
 use App\Localizacion;
 use App\Departamentos;
@@ -26,9 +29,7 @@ use App\Responsables;
 use App\Empleados;
 use App\Modelequi;
 use App\Marcaequi;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
-use  Anouar\Fpdf\Facades\Fpdf as Fpdf;
+use App\Fotos;
 
 /**
  * Class HomeController
@@ -500,5 +501,25 @@ class HomeController extends Controller
             exit;        
         
 	}
+	public function fotosmantenimiento(Request $request){
+			if($request->hasFile('fotoid')){
+                $file=$request->file('fotoid');
+                $name=time().$file->getClientOriginalName();
+                $file->move(\public_path().'/img/mantenimientos/',$name);
+            }
+			$fotos=new Fotos();
+			$fotos->url=$name;
+			$fotos->observacion=$request->observafoto;
+			$fotos->mantenimiento_id=$request->idequifotos;
+			$fotos->save();
+			return response()->json(['msg'=>'Se adjunto la imagen','id'=>$request->idequifotos]);
+	}
+	public function traefotosmantenimiento(Request $request){
+		if($request->ajax()){
+			$fotos=Fotos::where('mantenimiento_id','=',$request->id)->get();
+			return response()->json($fotos);
+		}
+	}
+
 }
 

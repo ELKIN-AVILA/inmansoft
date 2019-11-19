@@ -12,6 +12,9 @@
     <div class="form-group">
         <button class="btn btn-primary" onclick="nuevo();">Nuevo</button>
     </div>
+    <div class="panel-success">
+            <div class="panel-heading" style="text-align:center;">Listado de Empleados</div>
+        
     <table class="table table-bordered" id="datos">
         <thead>
             <th>Primer Nombre</th>
@@ -37,7 +40,7 @@
             @endforeach
         </tbody>
     </table>
-    
+    </div>
     
     <div class="modal fade" id="nuevo" role="dialog">
         <div class="modal-dialog">

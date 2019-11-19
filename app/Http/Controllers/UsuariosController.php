@@ -24,7 +24,7 @@ class UsuariosController extends Controller
     }
     public function editar(Request $request){
         if($request->ajax()){
-            $usuarios=User::where('id','=',$reques->id)->get();
+            $usuarios=User::where('id','=',$request->id)->get();
             return response()->json($usuarios);
         }
     }

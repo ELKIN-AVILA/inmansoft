@@ -1,28 +1,5 @@
 $(document).ready(function(){
 /**imagenes*/
-$("#file-1").fileinput({
-    theme: 'fa',
-    uploadUrl: "/Casas/fotos",
-    uploadExtraData: function() {
-        return {
-            _token: $("input[name='_token']").val(),
-            id:$("#casasid").val()
-        };
-    },
-    extra:function(){
-        return{id:$("#casasid").val};
-    },
-    allowedFileExtensions: ['jpg', 'png', 'gif'],
-    overwriteInitial: false,
-    maxFileSize:2000,
-    maxFilesNum: 10,
-    slugCallback: function (filename) {
-        return filename.replace('(', '_').replace(']', '_');
-    },
-});
-$('#file-1').on('filebatchuploadcomplete', function(event, files, extra) {
-    $('#file-1').fileinput('clear');
-});
 
 
 /**fin imagenes */
@@ -333,6 +310,35 @@ $('#file-1').on('filebatchuploadcomplete', function(event, files, extra) {
             });
         }
    });
+   /**fotos mantenimiento */
+    $("#formulariofotmante").submit(function(e){
+        e.preventDefault();
+    }).validate({
+        rules:{
+        	fotoid:{
+                required:true
+            }
+    },
+    submitHandler:function(){
+        var formData = new FormData($('#formulariofotmante') [0]);
+        var token = $('input[name=_token]').val();
+
+        $.ajax({
+            headers: {'X-CSRF-TOKEN':token},
+            type:'POST',
+            url:'/Home/guardarfotos',
+            contentType: false,
+            processData: false,
+            data:formData,
+            success:function(data){
+                alertify.success(data.msg);
+                actufotos(data.id);
+                $("#observafoto").val(' ');
+                document.getElementById("fotoid").value = "";
+            }
+        });
+    }
+    });
 });
 /**Componentes */
 function hardware(id){
@@ -474,7 +480,7 @@ function mantenimientos(id){
                     tipo="No Programada";
                 }
                 if(element.estado=='N'){
-                    $("#manteni > tbody:last-child").append("<tr><td>"+i+"</td><td>"+element.fecha+"</td><td>"+tipo+"</td><td></td><td><button  class='btn btn-success' onclick='manteni("+element.id+");'>+</button><button class='btn btn-info' onclick='fotos("+element.id+");'><i class='fa fa-image'></i></button></td></tr>")
+                    $("#manteni > tbody:last-child").append("<tr><td>"+i+"</td><td>"+element.fecha+"</td><td>"+tipo+"</td><td><button  class='btn btn-success' onclick='manteni("+element.id+");'>+</button></td></tr>");
                 }else{
                     $("#mantenire > tbody:last-child").append("<tr><td>"+i+"</td><td>"+element.fecha+"</td><td>"+tipo+"</td><td><button  class='btn btn-success' onclick='infomante("+element.id+");'><i class='fa fa-info-circle'></i></button><button class='btn btn-info' onclick='fotos("+element.id+");'><i class='fa fa-image'></i></button><a class='btn  btn-danger' href='/Home/infomantepdf/"+element.id+"'><i class='fa fa-file-pdf-o'></i></a></td></tr>");
 
@@ -507,8 +513,39 @@ function manteni(id){
     $("#idequimante").val(id);
     $("#detmantenimiento").modal("show");
 }
-function fotos(id){
+function actufotos(id){
+    $("#fotomante > tbody").empty();
     $("#idequifotos").val(id);
+    $.ajax({
+        type:'POST',
+        url:'/Home/traefotos',
+        data:{
+            '_token':_token,
+            'id':id
+        },
+        success:function(data){
+            data.forEach(ele=>{
+                $("#fotomante > tbody:last-child").append("<tr><td><img style='width:300px;heigth:168px;' src='img/mantenimientos/"+ele.url+"'></td><td>"+ele.observacion+"</td><td><button  class='btn btn-success' onclick='obserfoto("+ele.id+");'><i class='fa fa-info'></i></button></td></tr>");
+            });
+        }
+    })
+}
+function fotos(id){
+    $("#fotomante > tbody").empty();
+    $("#idequifotos").val(id);
+    $.ajax({
+        type:'POST',
+        url:'/Home/traefotos',
+        data:{
+            '_token':_token,
+            'id':id
+        },
+        success:function(data){
+            data.forEach(ele=>{
+                $("#fotomante > tbody:last-child").append("<tr><td><img style='width:300px;heigth:168px;' src='img/mantenimientos/"+ele.url+"'></td><td>"+ele.observacion+"</td><td><button  class='btn btn-success' onclick='obserfoto("+ele.id+");'><i class='fa fa-info'></i></button></td></tr>");
+            });
+        }
+    })
     $("#fotosmantenimiento").modal("show");
 }
 function nuevoman(){

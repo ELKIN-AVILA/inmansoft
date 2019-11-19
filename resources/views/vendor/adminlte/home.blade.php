@@ -11,6 +11,7 @@
 
 
 @section('main-content')
+
 	<div class="row" id="sedes">	
 			@php 
 			  $ban=0;
@@ -101,7 +102,6 @@
 									<th>#</th>
 									<th>Fecha</th>
 									<th>Tipo</th>
-									<th>Estado</th>
 									<th>Acciones</th>
 								</thead>
 								<tbody>
@@ -211,21 +211,50 @@
 				  <h4 class="modal-title">Fotos de Mantenimiento</h4>
 				</div>
 				<div class="modal-body">
-					<input type="hidden" name="idequifotos" id="idequifotos">
 					<div class="row">
-						<div class="col-sm-12">
-                            {!! csrf_field() !!}                            
-                              <h4>Agregar Fotos</h4>
-                            
-                              <div class="form-group">
-                                <div class="file-loading">
-                                    <input id="file-1" type="file" name="file" multiple class="file" data-overwrite-initial="false" data-min-file-count="1">
-                                </div>
-                            </div>
-                        </div>
+						<form action="" id="formulariofotmante" enctype="multipart/form-data">
+							<input type="hidden" name="idequifotos" id="idequifotos">
+								<div class="col-sm-12">
+										<div class="col-sm-4">
+											<label for="">Foto:</label>
+										</div>
+										<div class="col-sm-8">
+											<input type="file" name="fotoid" id="fotoid" class="form-control">
+										</div>
+									</div>
+									<div class="col-sm-12">
+										<div class="col-sm-4">
+											<label for="">Observacion:</label>
+										</div>
+										<div class="col-sm-8">
+											<textarea name="observafoto" id="observafoto" cols="41" rows="10" style="resize:none;"></textarea>
+										</div>
+									</div>
+									<div class="col-sm-12" style="text-align:end;">
+										<br>
+										<button class="btn btn-success">Guardar</button>
+									</div>
+						</form>
 					</div>
 				</div>
-				
+				<div class="modal-footer">
+					<div class="panel-success">
+					<div class="panel-heading" style="text-align:center;">
+						Listado de fotos Mantenimiento
+					</div>
+					
+					<table class="table table-bordered" id="fotomante">
+						<thead>
+							<th>Imagen</th>
+							<th>Observacion</th>
+							<th>Acciones</th>
+						</thead>
+						<tbody>
+
+						</tbody>
+					</table>
+					</div>
+				</div>
 			  </div>
 			  
 			</div>

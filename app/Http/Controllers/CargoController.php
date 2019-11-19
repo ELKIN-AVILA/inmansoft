@@ -8,7 +8,7 @@ use App\Cargo;
 class CargoController extends Controller
 {
 	public function index(){
-		$cargo=DB::table('cargo')->paginate(6);
+		$cargo=Cargo::all();
 		return view('Cargo.index',['cargo'=>$cargo]);
 	}
 	public function guardar(Request $request){

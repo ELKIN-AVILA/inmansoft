@@ -14,6 +14,9 @@
                 <button class="btn btn-primary" onclick="nuevo();">Nuevo</button>
             </div>
         </div>
+        <div class="panel-success">
+                <div class="panel-heading" style="text-align:center;">Listado de Permisos por rol</div>
+            
         <table class="table table-bordered">
             <thead>
                 <th>#</th>
@@ -38,6 +41,7 @@
                 @endforeach
             </tbody>
         </table>
+    </div>
     <div class="modal fade" id="nuevo" role="dialog">
         <div class="modal-dialog">
           <div class="modal-content">

@@ -13,6 +13,9 @@
         <button class="btn btn-primary" onclick="nuevo();">Nuevo</button>
     </div>
     <!-- Table-->
+    <div class="panel-success">
+        <div class="panel-heading" style="text-align:center;">Listado de Tipo de Equipos</div>
+    
         <table class="table table-bordered" id="datos">
             <thead>
                 <th>#</th>
@@ -20,12 +23,21 @@
                 <th>Acciones</th>
             </thead>
             <tbody>
+                @php
+                    $cont=0;    
+                @endphp
                 @foreach($tipequipo as $mtip)
-			
+                    @php
+                        $cont=$cont+1;    
+                    @endphp
                     <tr>
                         <td>{{ $mtip->id }}</td>
                         <td>{{ $mtip->nombre }}</td>
-                        <td><button class="btn btn-warning" onclick="editar({{ $mtip->id }})" data-toggle="tooltip" data-placement="left" title="Editar"><i class="fa fa-edit"></i></button><button class="btn btn-danger" onclick="eliminar({{ $mtip->id }})" data-toggle="tooltip" data-placement="right" title="Eliminar"><i class="fa fa-trash"></i></button></td>
+                        @if($mtip->id>=11)
+                            <td><button class="btn btn-warning" onclick="editar({{ $mtip->id }})" data-toggle="tooltip" data-placement="left" title="Editar"><i class="fa fa-edit"></i></button><button class="btn btn-danger" onclick="eliminar({{ $mtip->id }})" data-toggle="tooltip" data-placement="right" title="Eliminar"><i class="fa fa-trash"></i></button></td>
+                        @else
+                            <td></td>
+                        @endif
                     </tr>
 
                 @endforeach

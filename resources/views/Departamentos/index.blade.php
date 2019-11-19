@@ -13,6 +13,9 @@
         <button class="btn btn-primary" onclick="nuevo();">Nuevo</button>
     </div>
     <!--Table -->
+    <div class="panel-success">
+        <div class="panel-heading" style="text-align:center;">Listado de Departamentos</div>
+    
     <table class="table table-bordered" id="datos">
         <thead>
             <th>#</th>
@@ -35,6 +38,7 @@
             @endforeach    
         </tbody>
     </table>
+    </div>
     <!-- -->
     <!-- modal nuevo-->
     <div class="modal fade" id="nuevo" role="dialog">

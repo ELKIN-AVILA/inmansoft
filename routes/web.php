@@ -26,6 +26,8 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('/Home/infomantepdf/{id}','HomeController@infomantepdf');
         Route::post('/Home/guardarmantenimiento','HomeController@guardarmantenimiento');
         
+        Route::post('/Home/guardarfotos','HomeController@fotosmantenimiento');
+        Route::post('/Home/traefotos','HomeController@traefotosmantenimiento');
 
         /**fin componentes */
         Route::post('/Home/traeprogramas','HomeController@traeprogramas');
@@ -192,7 +194,9 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post('/Usuarios/guardar','UsuariosController@guardar');
         Route::post('/Usuarios/editar','UsuariosController@editar');
         Route::put('/Usuarios/actualizar','UsuariosController@actualizar');
-
+        /**Reportes */
+        Route::get('/Reportes','ReportesController@index');
+        Route::post('/Reportes/reporteequipos','ReportesController@reporteequipos');
 
     });
 

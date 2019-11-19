@@ -8,7 +8,7 @@ use App\Marcaequi;
 class MarcaequiController extends Controller
 {
     public function index(){
-        $marcaequi=DB::table('marcaequi')->paginate(6);
+        $marcaequi=Marcaequi::all();
         return view('Marcaequi.index',['marcaequi'=>$marcaequi]);
     }
     public function guardar(Request $request){
