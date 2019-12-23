@@ -59,7 +59,6 @@ $(document).ready(function(){
         submitHandler:function(){
             var id=$("#idag").val();
             var numver=$("#numver").val();
-            alert(id);
             $.ajax({
                 type:'POST',
                 url:'/Programas/guardarvers',

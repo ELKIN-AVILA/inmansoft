@@ -5,7 +5,7 @@
 @endsection
 
 @section('content')
-<body class="hold-transition login-page" style="background:#f39c12;">
+<body class="hold-transition login-page" style="background: rgb(2,0,36);background: linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(7,14,105,1) 31%, rgba(8,17,120,1) 38%, rgba(9,18,127,1) 39%, rgba(9,9,121,1) 47%, rgba(0,212,255,1) 100%);">
     <div id="app">
         <div class="login-box">
 
@@ -23,7 +23,7 @@
         <div class="login-box-body" style="border-radius:40px">
 	
             <div class="login-logo">
-                <a href="{{ url('/home') }}" style="color:#f39c12;"><b>INMANSOFT</b></a>
+                <a href="{{ url('/home') }}" style="color:#2f363c;"><b>INMANSOFT</b></a>
             </div><!-- /.login-logo -->
 	    <img />
         <form action="{{ url('/login') }}" method="post">
@@ -47,7 +47,8 @@
                     </div>
                 </div><!-- /.col -->
                 <div class="col-xs-4">
-                    <button type="submit" class="btn btn-primary btn-block btn-flat">Ingresar</button>
+                    <button type="submit" class="btn btn-primary btn-block btn-flat" style="border-radius: 100px 100px 100px 100px;
+                    -moz-border-radius: 100px 100px 100px 100px;-webkit-border-radius: 100px 100px 100px 100px;border: 0px solid #000000;">Ingresar</button>
                 </div><!-- /.col -->
             </div>
         </form>

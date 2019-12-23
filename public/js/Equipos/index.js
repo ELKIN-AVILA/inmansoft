@@ -64,6 +64,7 @@ function infor(id){
             'id':id
         },
         success:function(data){
+            
             var estado;
             if(data['equipos'][0]['fechaegre']!=null){
                 var fechaegreso=data['equipos'][0]['fechaegre'];

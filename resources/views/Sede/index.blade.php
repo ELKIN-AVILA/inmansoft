@@ -12,35 +12,25 @@
     <div class="form-group">
         <button class="btn btn-primary" onclick="nuevo();">Nuevo</button>
     </div>
-    <!-- Table-->
-    <div class="panel-success">
-        <div class="panel-heading" style="text-align:center;">Listado de Sedes</div>
-    
-        <table class="table table-bordered" id="datos">
-            <thead>
-                <th>#</th>
-                <th>Nombre</th>
-                <th>Estado</th>
-                <th>Acciones</th>
-            </thead>
-            <tbody>
-                @foreach($sedes as $msedes)
-                    <tr>
-                        <td>{{ $msedes->id }}</td>
-                        <td>{{ $msedes->nombre }}</td>
-                        @if($msedes->estado=="A")
-                            <td>ACTIVO</td>
+    @foreach($sedes as $msedes)
+    <div class="col-sm-3">
+        <div class="info-box bg-primary">
+            <span class="info-box-icon">
+                <i class="fa fa-home"></i>
+            </span>
+            <div class="info-box-content">
+                <span class="info-box-text">{{ $msedes->nombre }}</span>
+                @if($msedes->estado=="A")
+                            <span class="info-box-text">ACTIVO</span>
                         @else
-                            <td>INACTIVO</td>
-                        @endif
-                        <td><button class="btn btn-warning" onclick="editar({{ $msedes->id }})" data-toggle="tooltip" data-placement="left" title="Editar"><i class="fa fa-edit"></i></button><button class="btn btn-danger" onclick="eliminar({{ $msedes->id }})" data-toggle="tooltip" data-placement="right" title="Eliminar"><i class="fa fa-trash"></i></button></td>
-                    </tr>
-
-                @endforeach
+                            <span class="info-box-text">INACTIVO</span>
+                @endif
+                <td><button class="btn btn-warning" onclick="editar({{ $msedes->id }})" data-toggle="tooltip" data-placement="left" title="Editar"><i class="fa fa-edit"></i></button><button class="btn btn-danger" onclick="eliminar({{ $msedes->id }})" data-toggle="tooltip" data-placement="right" title="Eliminar"><i class="fa fa-trash"></i></button></td>
                 
-            </tbody>
-        </table>
+            </div>
+        </div>
     </div>
+    @endforeach
 <!--end Table -->
 
     <div class="modal fade" id="nuevo" role="dialog">

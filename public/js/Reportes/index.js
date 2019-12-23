@@ -14,7 +14,12 @@ function generaequi(){
             'ano':ano
         },
         success:function(data){
-            
+            console.log('ok');
+            var blob = new Blob([data], { type: 'application/pdf' });
+            var link = document.createElement('a');
+            link.href = window.URL.createObjectURL(blob);
+            link.download = "report.pdf";
+            link.click();
         }
     });
 }

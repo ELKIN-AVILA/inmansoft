@@ -141,7 +141,7 @@
 
             <div class="modal-footer">
                 <div class="col-sm-12">
-                        <table class="table table-bordered" id="versiones">
+                        <table class="table table-bordered"  id="versiones">
                             <thead>
                                 <th>#</th>
                                 <th>Version</th>

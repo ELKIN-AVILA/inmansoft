@@ -55,14 +55,6 @@
                 <div class="row">
                     <div class="col-sm-12">
                         <div class="col-sm-4">
-                            <label for="">Nombre:</label>
-                        </div>
-                        <div class="col-sm-8">
-                            <input type="text"  maxlength="45"  minlength="1" name="nombre" id="nombre" class="form-control required"> 
-                        </div>
-                    </div>
-                    <div class="col-sm-12">
-                        <div class="col-sm-4">
                             <label for="">Marca de equipo:</label>
                         </div>
                         <div class="col-sm-8">
@@ -74,6 +66,15 @@
                             </select>
                         </div>
                     </div>  
+                    <div class="col-sm-12">
+                        <div class="col-sm-4">
+                            <label for="">Nombre:</label>
+                        </div>
+                        <div class="col-sm-8">
+                            <input type="text"  maxlength="45"  minlength="1" name="nombre" id="nombre" class="form-control required"> 
+                        </div>
+                    </div>
+                    
                 </div>
             </div>
             <div class="modal-footer">
@@ -100,14 +101,6 @@
                 <input type="hidden" name="idedi" id="idedi">
                 <div class="row">
                     <div class="col-sm-12">
-                        <div class="col-sm-4">
-                            <label for="">Nombre:</label>
-                        </div>
-                        <div class="col-sm-8">
-                            <input type="text" maxlength="45" minlength="1" name="nombreedi" id="nombreedi" class="form-control required"> 
-                        </div>
-                    </div>
-                    <div class="col-sm-12">
                             <div class="col-sm-4">
                                 <label for="">Marca de equipo:</label>
                             </div>
@@ -119,7 +112,16 @@
                                     @endforeach
                                 </select>
                             </div>
+                    </div>
+                    <div class="col-sm-12">
+                        <div class="col-sm-4">
+                            <label for="">Nombre:</label>
                         </div>
+                        <div class="col-sm-8">
+                            <input type="text" maxlength="45" minlength="1" name="nombreedi" id="nombreedi" class="form-control required"> 
+                        </div>
+                    </div>
+                    
                     
                 </div>
             </div>

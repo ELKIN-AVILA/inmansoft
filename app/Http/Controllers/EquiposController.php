@@ -118,7 +118,7 @@ class EquiposController extends Controller
         }
 
 		/**poner D */
-		$fpdf::Output('');
+		$fpdf::Output('D');
 		exit;
     }
     public function informacion(Request $request){

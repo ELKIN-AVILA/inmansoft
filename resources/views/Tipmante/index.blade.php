@@ -25,7 +25,7 @@
                 @foreach($tipmante as $mtip)
                     <tr>
                         <td>{{ $mtip->nombre }}</td>
-                        <td><button class="btn btn-warning" onclick="editar({{ $mtip->id }})" data-toggle="tooltip" data-placement="left" title="Editar"><i class="fa fa-edit"></i></button><button class="btn btn-danger" onclick="eliminar({{ $mtip->id }})" data-toggle="tooltip" data-placement="right" title="Eliminar"><i class="fa fa-trash"></i></button></td>
+                        <td><button class="btn btn-warning" onclick="editar({{ $mtip->id }})" data-toggle="tooltip" data-placement="left" title="Editar"><i class="fa fa-edit"></i></button></td>
                     </tr>
 
                 @endforeach

@@ -10,7 +10,7 @@ use App\Marcaequi;
 class ModelequiController extends Controller
 {
     public function index(){
-        $modelequi = DB::table('modelequi')->paginate(6);
+        $modelequi = Modelequi::all();
         $marcaequi = Marcaequi::all();
         return view('Modelequi.index',['modelequi'=>$modelequi,'marcaequi'=>$marcaequi]);
     }

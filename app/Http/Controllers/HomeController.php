@@ -30,7 +30,7 @@ use App\Empleados;
 use App\Modelequi;
 use App\Marcaequi;
 use App\Fotos;
-
+use App\Transladoequip;
 /**
  * Class HomeController
  * @package App\Http\Controllers
@@ -68,7 +68,8 @@ class HomeController extends Controller
 		$departamentos=Departamentos::all();
 		$tipmante=Tipmante::all();
 		$componentes=Componentes::all();
-	    return view('adminlte::home',['sede'=>$sede,'departamentos'=>$departamentos,'tipmante'=>$tipmante,'nequipos'=>$nequipo,'tipcomponente'=>$tipcomponente,'programas'=>$programas,'version'=>$versiones,'componentes'=>$componentes]);
+		$dependencias=Dependencias::all();
+	    return view('adminlte::home',['sede'=>$sede,'departamentos'=>$departamentos,'dependencias'=>$dependencias,'tipmante'=>$tipmante,'nequipos'=>$nequipo,'tipcomponente'=>$tipcomponente,'programas'=>$programas,'version'=>$versiones,'componentes'=>$componentes]);
     }
 
     public function traerdepartamentos(Request $request){
@@ -110,16 +111,24 @@ class HomeController extends Controller
 	    $localizacion=DB::table('localizacion')->where([['sede_id','=',$request->sede_id],['departamentos_id','=',$departamentos],['dependencias_id','=',$dependencias]])->get();
 	    $equipos=array();
 	    $tipo=array();
-	    $mantenimientos=array();
+		$mantenimientos=array();
+		$emple=array();
 	    foreach($localizacion as $mequi){
 		    $eq=Equipos::where('id','=',$mequi->equipos_id)->get();
 		    foreach($eq as $meq){
+				$responsables=Responsables::where('equipos_id','=',$meq->id)->get();
+				foreach($responsables as $mres){
+					$empleados=Empleados::where('id','=',$mres->empleados_id)->get();
+					foreach($empleados as $memple){
+						array_push($emple,$memple->priape." ". $memple->segape." ".$memple->prinom);
+					}
+				}
 			    $tip=Tipequipo::where('id','=',$meq['tipequipo_id'])->get();
 			    array_push($tipo,$tip);
 		    }
 		    array_push($equipos,$eq);
 	    }
-	    return response()->json(['equipos'=>$equipos,'tipoequ'=>$tipo]);
+	    return response()->json(['equipos'=>$equipos,'tipoequ'=>$tipo,'responsables'=>$emple]);
     }
     public function mantenimientos(Request $request){
 	    if($request->ajax()){
@@ -258,7 +267,7 @@ class HomeController extends Controller
 			$fpdf::MultiCell(340,8,$mdet->descripcion,1,'J');
 		}
 		/**poner D */
-		$fpdf::Output('');
+		$fpdf::Output('D');
 		exit; 
 	}
 	public function componentes(Request $request){
@@ -320,11 +329,16 @@ class HomeController extends Controller
 	}
 	public function guardarcomponente(Request $request){
 		if($request->ajax()){
-			$compoxequipo=new Compoxequipo();
-			$compoxequipo->equipos_id=$request->idequi;
-			$compoxequipo->componentes_id=$request->componente;
-			$compoxequipo->save();
-			return response()->json(['msg'=>'Se asigno correctamente el componente','idequipo'=>$request->idequi]);
+			$consulta=Compoxequipo::where([['equipos_id','=',$request->idequi],['componentes_id','=',$request->componente]])->first();
+			if($consulta){
+				return response()->json(['msg'=>'Ya esta asignado el componente','idequipo'=>$request->idequi]);
+			}else{
+				$compoxequipo=new Compoxequipo();
+				$compoxequipo->equipos_id=$request->idequi;
+				$compoxequipo->componentes_id=$request->componente;
+				$compoxequipo->save();
+				return response()->json(['msg'=>'Se asigno correctamente el componente','idequipo'=>$request->idequi]);
+			}
 		}
 	}
 	public function traeprogramas(Request $request){
@@ -355,14 +369,19 @@ class HomeController extends Controller
 	}
 	public function softwarexequipo(Request $request){
 		if($request->ajax()){
-			$software=new Softwarexequipo();
-			$software->equipos_id=$request->idequipo;
-			$software->versionpro_id=$request->version;
-			$software->licencia=$request->licencia;
-			$software->fechainst=$request->fechainst;
-			$software->fechacaducid =$request->fechacadu;
-			$software->save();
-			return response()->json(['msg'=>"Se asigno el programa",'idequipo'=>$request->idequipo]);
+			$consulta=Softwarexequipo::where([['equipos_id','=',$request->idequipo],['versionpro_id','=',$request->version]])->first();
+			if($consulta){
+				return response()->json(['msg'=>"Ya esta asignado el programa",'idequipo'=>$request->idequipo]);
+			}else{
+				$software=new Softwarexequipo();
+				$software->equipos_id=$request->idequipo;
+				$software->versionpro_id=$request->version;
+				$software->licencia=$request->licencia;
+				$software->fechainst=$request->fechainst;
+				$software->fechacaducid =$request->fechacadu;
+				$software->save();
+				return response()->json(['msg'=>"Se asigno el programa",'idequipo'=>$request->idequipo]);
+			}
 		}
 	}
 	public function eliminarpro(Request $request){
@@ -433,12 +452,12 @@ class HomeController extends Controller
 	public function hojavidareporte(Request $request,$id){
 			$fpdf = new Fpdf();
 			$fpdf::AddPage('P','Legal');
-            $fpdf::SetFont('Arial','B',16);
-            $fpdf::Image('img/camara.png',40,10,32);
-            $fpdf::SetXY(10,10);
-            $fpdf::Cell(200,30,"",1,0,'C');
-            $fpdf::SetFont('Arial','',12);
-            $fpdf::SetXY(170,10);
+			$fpdf::SetFont('Arial','B',16);
+			$fpdf::Image('img/camara.png',40,10,32);
+			$fpdf::SetXY(10,10);
+			$fpdf::Cell(200,30,"",1,0,'C');
+			$fpdf::SetFont('Arial','',12);
+			$fpdf::SetXY(170,10);
 			$fpdf::Cell(40,8.3,"SI-FRT-000",1,1,'C');
 			$equipos=Equipos::find($id);
 			$fpdf::SetFont('Arial','B',12);
@@ -497,22 +516,22 @@ class HomeController extends Controller
 				}
 			}
 			$fpdf::footer();
-			$fpdf::Output('');
-            exit;        
-        
+			$fpdf::Output('D');
+			exit;        
+
 	}
 	public function fotosmantenimiento(Request $request){
-			if($request->hasFile('fotoid')){
-                $file=$request->file('fotoid');
-                $name=time().$file->getClientOriginalName();
-                $file->move(\public_path().'/img/mantenimientos/',$name);
-            }
-			$fotos=new Fotos();
-			$fotos->url=$name;
-			$fotos->observacion=$request->observafoto;
-			$fotos->mantenimiento_id=$request->idequifotos;
-			$fotos->save();
-			return response()->json(['msg'=>'Se adjunto la imagen','id'=>$request->idequifotos]);
+		if($request->hasFile('fotoid')){
+			$file=$request->file('fotoid');
+			$name=time().$file->getClientOriginalName();
+			$file->move(\public_path().'/img/mantenimientos/',$name);
+		}
+		$fotos=new Fotos();
+		$fotos->url=$name;
+		$fotos->observacion=$request->observafoto;
+		$fotos->mantenimiento_id=$request->idequifotos;
+		$fotos->save();
+		return response()->json(['msg'=>'Se adjunto la imagen','id'=>$request->idequifotos]);
 	}
 	public function traefotosmantenimiento(Request $request){
 		if($request->ajax()){
@@ -520,6 +539,36 @@ class HomeController extends Controller
 			return response()->json($fotos);
 		}
 	}
-
+	public function traelocalizacion(Request $request){
+		if($request->ajax()){
+			$localizacion=Localizacion::where('equipos_id','=',$request->id)->get();
+			$translado=array();
+			$transla=Transladoequip::where('equipos_id','=',$request->id)->get();
+			foreach($transla as $mtransl){
+				$sede=Sede::find($mtransl->sedepro_id);
+				$departamento=Departamentos::find($mtransl->departamentospro_id);
+				$dependencias=Dependencias::find($mtransl->dependenciaspro_id);
+				array_push($translado,['sede'=>$sede->nombre,'departamento'=>$departamento->nombre,'dependencia'=>$dependencias->nombre,'observacion'=>$mtransl->observacion]);
+			}
+			return response()->json(['localizacion'=>$localizacion,'translado'=>$translado]);
+		}
+	}
+	public function guardartranslado(Request $request){
+		if($request->ajax()){
+			$transladoequip=new Transladoequip();
+			$transladoequip->equipos_id=$request->equipo_id;
+			$transladoequip->sedepro_id=$request->sedepro_id;
+			$transladoequip->departamentospro_id=$request->departamentospro_id;
+			$transladoequip->dependenciaspro_id=$request->dependenciaspro_id;
+			$transladoequip->sedeactu_id=$request->sedeactu;
+			$transladoequip->departamentosactu_id=$request->departamentosactu;
+			$transladoequip->dependenciasactu_id=$request->dependenciaactu;
+			$transladoequip->observacion=$request->observacion;
+			$transladoequip->save();
+			$localizacion=Localizacion::where('equipos_id','=',$request->equipo_id)->update(['sede_id'=>$request->sedeactu,'departamentos_id'=>$request->departamentosactu,'dependencias_id'=>$request->dependenciaactu]);
+			return response()->json("Se guardo exitosamente el registro");
+			
+		}
+	}
 }
 

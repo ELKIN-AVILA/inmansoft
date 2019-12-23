@@ -1,46 +1,48 @@
 <?php
 
-
 Route::get('/', function () {
     return view('adminlte::auth.login');
 });
 Route::group(['middleware' => 'auth'], function () {
-        /**Principal */
-        Route::post('/Home/traedepar','HomeController@traerdepartamentos');
-        Route::post('/Home/traerdependencias','HomeController@traerdependencias');
-        Route::post('/Home/traerequipos','HomeController@traerequipos');   
-        Route::post('/Home/equipos','HomeController@equipos'); 
-        Route::post('/Home/mantenimientos','HomeController@mantenimientos');
-        /**Componentes */
-        Route::post('/Home/componentes','HomeController@componentes');
-        Route::post('/Home/traecomponente','HomeController@traecomponentes');
-        Route::post('/Home/guardarcomponente','HomeController@guardarcomponente');
-        Route::post('/Home/eliminarcomponente','HomeController@eliminarcomponente');
-        Route::post('/Home/editarcomponente','HomeController@editarcomponente');
-        Route::post('/Home/actualizarcomponente','HomeController@actualizarcomponente');
-
-        /**Mantenimientos */
-        Route::post('/Home/detmantenimientos','HomeController@detmantenimientos');
-        Route::post('/Home/guardardetmante','HomeController@guardardetmante');
-        Route::post('/Home/infomantenimiento','HomeController@infomantenimiento');
-        Route::get('/Home/infomantepdf/{id}','HomeController@infomantepdf');
-        Route::post('/Home/guardarmantenimiento','HomeController@guardarmantenimiento');
-        
-        Route::post('/Home/guardarfotos','HomeController@fotosmantenimiento');
-        Route::post('/Home/traefotos','HomeController@traefotosmantenimiento');
-
-        /**fin componentes */
-        Route::post('/Home/traeprogramas','HomeController@traeprogramas');
-        Route::post('/Home/traeversiones','HomeController@traeversiones');
-        Route::post('/Home/guardarprogequi','HomeController@softwarexequipo');
-        Route::post('/Home/guardarprogequiactu','HomeController@actualizarpro');
-        Route::post('/Home/editarpro','HomeController@editarpro');
-        Route::post('/Home/eliminarpro','HomeController@eliminarpro');
-        /* Hoja de vida*/
-        Route::post('/Home/hojavi','HomeController@hojavida');
-        Route::get('/Home/hojavireporte/{id}','HomeController@hojavidareporte');
-
-        
+          /**Principal */
+          Route::post('/Home/traedepar','HomeController@traerdepartamentos');
+          Route::post('/Home/traerdependencias','HomeController@traerdependencias');
+          Route::post('/Home/traerequipos','HomeController@traerequipos');   
+          Route::post('/Home/equipos','HomeController@equipos'); 
+          Route::post('/Home/mantenimientos','HomeController@mantenimientos');
+          /**Componentes */
+          Route::post('/Home/componentes','HomeController@componentes');
+          Route::post('/Home/traecomponente','HomeController@traecomponentes');
+          Route::post('/Home/guardarcomponente','HomeController@guardarcomponente');
+          Route::post('/Home/eliminarcomponente','HomeController@eliminarcomponente');
+          Route::post('/Home/editarcomponente','HomeController@editarcomponente');
+          Route::post('/Home/actualizarcomponente','HomeController@actualizarcomponente');
+  
+          /**Mantenimientos */
+          Route::post('/Home/detmantenimientos','HomeController@detmantenimientos');
+          Route::post('/Home/guardardetmante','HomeController@guardardetmante');
+          Route::post('/Home/infomantenimiento','HomeController@infomantenimiento');
+          Route::get('/Home/infomantepdf/{id}','HomeController@infomantepdf');
+          Route::post('/Home/guardarmantenimiento','HomeController@guardarmantenimiento');
+          
+          Route::post('/Home/guardarfotos','HomeController@fotosmantenimiento');
+          Route::post('/Home/traefotos','HomeController@traefotosmantenimiento');
+  
+          /**fin componentes */
+          Route::post('/Home/traeprogramas','HomeController@traeprogramas');
+          Route::post('/Home/traeversiones','HomeController@traeversiones');
+          Route::post('/Home/guardarprogequi','HomeController@softwarexequipo');
+          Route::post('/Home/guardarprogequiactu','HomeController@actualizarpro');
+          Route::post('/Home/editarpro','HomeController@editarpro');
+          Route::post('/Home/eliminarpro','HomeController@eliminarpro');
+          /* Hoja de vida*/
+          Route::post('/Home/hojavi','HomeController@hojavida');
+          Route::get('/Home/hojavireporte/{id}','HomeController@hojavidareporte');
+          /**Translado de equipos */
+          Route::post('/Home/traelocalizacion','HomeController@traelocalizacion');
+          Route::post('/Home/guardartranslado','HomeController@guardartranslado');
+            
+          /**FIN PRINCIPAL */   
 
         /**Departamentos */
         Route::get('/Departamentos','DepartamentosController@index');
@@ -197,7 +199,14 @@ Route::group(['middleware' => 'auth'], function () {
         /**Reportes */
         Route::get('/Reportes','ReportesController@index');
         Route::post('/Reportes/reporteequipos','ReportesController@reporteequipos');
+        Route::get('/Reportes/Sedes','ReportesController@reportesedes');
+        Route::get('/Reportes/Localizacion','ReportesController@reportelocalizacion');
+        Route::get('/Reportes/Empleados','ReportesController@reporteempleados');
+        Route::get('/Reportes/Responsables','ReportesController@reporteresponsablesequipos');
+        Route::get('/Reportes/Proveedores','ReportesController@reporteproveedores');
 
-    });
+        Route::get('/Correos','CorreosController@send');
+        
+});
 
 

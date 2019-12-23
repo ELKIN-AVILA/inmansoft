@@ -3,6 +3,7 @@ $(document).ready(function(){
 
 
 /**fin imagenes */
+
     $("#formulario").validate({
         rules:{
             sede_id:{
@@ -29,7 +30,7 @@ $(document).ready(function(){
                     'dependencias':dependencias_id
                 },
                 success:function(data){
-                    console.log(data);
+                    console.log("aaaa"+data);
                     
                         $("#contenido").empty();
                         var html="";
@@ -70,18 +71,30 @@ $(document).ready(function(){
                                     break;
                             }
                            
-                            console.log(data['tipoequ'][cont]['0']['nombre']);
                             html+="<div class='col-sm-4'>";
                             html+="<div class='panel panel-primary'>";
-                            html+="<div class='panel-heading'>Numero de placa "+element['0']['numplaca']+"</div>";
+                            html+="<div class='panel-heading'>NUMERO DE PLACA "+element['0']['numplaca']+"</div>";
                             html+="<div class='panel-body' style='text-align:center;'>";
                             html+="<h5 style='text-align:center;'>"+data['tipoequ'][cont]['0']['nombre']+"</h5>";
                             html+="<img src="+nmp+" style='height:96px;'>";
                             html+="<div>";
-                            html+="<button class='btn btn-success' onclick='programas("+element['0']['id']+")' data-toggle='tooltip' data-placement='top' title='Software'><i class='fa fa-laptop' style='font-size: xx-large'></i></button>";
-                            html+="<button class='btn btn-warning' onclick='hardware("+element['0']['id']+")' data-toggle='tooltip' data-placement='top' title='Hardware'><i class='fa fa-wrench' style='font-size: xx-large'></i></button>";
-                            html+="<button class='btn btn-info' onclick='hoja("+element['0']['id']+")' data-toggle='tooltip' data-placement='top' title='Hoja de vida'><i class='fa fa-folder-open-o' style='font-size: xx-large'></i></button>";
-                            html+="<button onclick='mantenimientos("+element['0']['id']+");' class='btn btn-primary' data-toggle='tooltip' data-placement='top' title='Mantenimiento'><i class='fa fa-cog' style='font-size: xx-large'></i></button>"
+                            if(data['tipoequ'][cont]['0']['id'] === 1 || data['tipoequ'][cont]['0']['id'] === 3){
+                                html+="<button class='btn btn-success' onclick='programas("+element['0']['id']+")' data-toggle='tooltip' data-placement='top' title='Software'><i class='fa fa-laptop' style='font-size: xx-large'></i></button>";
+                                html+="<button class='btn btn-warning' onclick='hardware("+element['0']['id']+")' data-toggle='tooltip' data-placement='top' title='Hardware'><i class='fa fa-wrench' style='font-size: xx-large'></i></button>";
+                                html+="<button class='btn btn-info' onclick='hoja("+element['0']['id']+")' data-toggle='tooltip' data-placement='top' title='Hoja de vida'><i class='fa fa-folder-open-o' style='font-size: xx-large'></i></button>";
+                                html+="<button onclick='mantenimientos("+element['0']['id']+");' class='btn btn-primary' data-toggle='tooltip' data-placement='top' title='Mantenimiento'><i class='fa fa-cog' style='font-size: xx-large'></i></button>";
+                                html+="<button onclick='translado("+element['0']['id']+");' class='btn btn-danger' data-toggle='tooltip' data-placement='top' title='Translado'><i class='fa fa-exchange' style='font-size: xx-large'></i></button>";
+
+                            }else{
+                                html+="<button onclick='mantenimientos("+element['0']['id']+");' class='btn btn-primary' data-toggle='tooltip' data-placement='top' title='Mantenimiento'><i class='fa fa-cog' style='font-size: xx-large'></i></button>";
+                                html+="<button onclick='translado("+element['0']['id']+");' class='btn btn-danger' data-toggle='tooltip' data-placement='top' title='Translado'><i class='fa fa-exchange' style='font-size: xx-large'></i></button>";
+
+                            }
+                            html+="<div class='row'>";
+                            html+="<div class='col-sm-12'>";
+                            html+="<p>"+data['responsables'][cont]+"</p>";
+                            html+="</div>";
+                            html+="</div>";
                             html+="</div>";
                             html+="</div>";   
                             html+="</div>";
@@ -218,6 +231,8 @@ $(document).ready(function(){
                 },
                 success:function(data){
                     alertify.success(data.msg);
+                    $("#tipcomponente").val(" ");
+                    $("#componenteid").val(" ");
                     actucomponente(data.idequipo);
                 }
             });
@@ -306,6 +321,51 @@ $(document).ready(function(){
                     $("#tipmante_id").val(" ");
                     mantenimientos(data.idequipo);
                     $("#nuevoman").modal("hide");
+                }
+            });
+        }
+   });
+   $("#formultranslado").validate({
+        rules:{
+            sedeacut:{
+                required:true
+            },
+            departamentosactu:{
+                required:true
+            },
+            dependenciaactu:{
+                required:true
+            },
+            observatransla:{
+                required:true
+            }
+        },
+        submitHandler:function(){
+            var equipo=$("#equipoidtran").val();
+            var sedeactu=$("#sedeactu").val();
+            var departamentosactu=$("#departamentosactu").val();
+            var dependeciaactu=$("#dependenciaactu").val();
+            var sedepro=$("#sedeprovi").val();
+            var departamentospro=$("#departamentosprovi").val();
+            var dependenciapro=$("#dependenciapro").val(); 
+            var observacion=$("#observatransla").val();
+            $.ajax({
+                type:'POST',
+                url:'/Home/guardartranslado',
+                data:{
+                    '_token':_token,
+                    'equipo_id':equipo,
+                    'sedeactu':sedeactu,
+                    'departamentosactu':departamentosactu,
+                    'dependenciaactu':dependeciaactu,
+                    'sedepro_id':sedepro,
+                    'departamentospro_id':departamentospro,
+                    'dependenciaspro_id':dependenciapro,
+                    'observacion':observacion
+                },
+                success:function(data){
+                    alertify.success(data);
+                    location.reload();
                 }
             });
         }
@@ -525,7 +585,7 @@ function actufotos(id){
         },
         success:function(data){
             data.forEach(ele=>{
-                $("#fotomante > tbody:last-child").append("<tr><td><img style='width:300px;heigth:168px;' src='img/mantenimientos/"+ele.url+"'></td><td>"+ele.observacion+"</td><td><button  class='btn btn-success' onclick='obserfoto("+ele.id+");'><i class='fa fa-info'></i></button></td></tr>");
+                $("#fotomante > tbody:last-child").append("<tr><td><img style='width:300px;heigth:168px;' src='img/mantenimientos/"+ele.url+"'></td><td>"+ele.observacion+"</td></tr>");
             });
         }
     })
@@ -542,7 +602,7 @@ function fotos(id){
         },
         success:function(data){
             data.forEach(ele=>{
-                $("#fotomante > tbody:last-child").append("<tr><td><img style='width:300px;heigth:168px;' src='img/mantenimientos/"+ele.url+"'></td><td>"+ele.observacion+"</td><td><button  class='btn btn-success' onclick='obserfoto("+ele.id+");'><i class='fa fa-info'></i></button></td></tr>");
+                $("#fotomante > tbody:last-child").append("<tr><td><img style='width:300px;heigth:168px;' src='img/mantenimientos/"+ele.url+"'></td><td>"+ele.observacion+"</td></tr>");
             });
         }
     })
@@ -572,7 +632,6 @@ function departamentos(id){
                
         }
     });
-
 }
 function dependencias(id){
     $("#dependencias_id").empty();
@@ -666,14 +725,16 @@ function programas(id){
         },
         success:function(data){
             var band=0;
+            var estad;
             data['softxequi'].forEach(element=>{
                     var nombre="";
                     data['version'].forEach(ell=>{ 
                                 if(ell.id==element.versionpro_id){
                                     nombre=ell.nombre;
                                 }
-                    });     
-                        $('#prolist tr:last').after("<tr><td style='text-align:left;'>"+data['programas'][band]+"</td><td style='text-align:left;'>"+nombre+"</td><td>"+element.estado+"</td><td><button class='btn btn-warning' onclick='editarpro("+element.id+")'><i class='fa fa-edit'></i></button><button class='btn btn-danger' onclick='eliminarpro("+element.id+")'><i class='fa fa-trash'></i></button></td></tr>");
+                    });
+                    element.estado === 'A'? estad='ACTIVO':estad='INACTIVO';
+                        $('#prolist tr:last').after("<tr><td style='text-align:left;'>"+data['programas'][band]+"</td><td style='text-align:left;'>"+nombre+"</td><td>"+ estad +"</td><td><button class='btn btn-warning' onclick='editarpro("+element.id+")'><i class='fa fa-edit'></i></button><button class='btn btn-danger' onclick='eliminarpro("+element.id+")'><i class='fa fa-trash'></i></button></td></tr>");
                         band+=1;
             });               
             data['equipo'].forEach(element=>{
@@ -767,6 +828,25 @@ function eliminarpro(id){
         });
     });
 }
+/**filtro de los programas */
+function filtropro(){
+    let input, filter, table, tr, td, i, txtValue;
+    input = document.getElementById("filtropro");
+    filter = input.value.toUpperCase();
+    table = document.getElementById("prolist");
+    tr = table.getElementsByTagName("tr");
+    for (i = 0; i < tr.length; i++) {
+        td = tr[i].getElementsByTagName("td")[0];
+        if (td) {
+          txtValue = td.textContent || td.innerText;
+          if (txtValue.toUpperCase().indexOf(filter) > -1) {
+            tr[i].style.display = "";
+          } else {
+            tr[i].style.display = "none";
+          }
+        }       
+      }
+}
 function traepro(id){
     $("#prolist tr:not(:first-child)").remove();
     $.ajax({
@@ -837,4 +917,69 @@ function versionproid(id){
             });
         }
     }); 
+}
+/**Translado de equipo */
+function translado(id){
+    $("#sedepro").empty();
+    $("#departamentospro").empty();
+    $("#dependenciaspro").empty();
+    $("#listatranslado tr:not(:first-child)").remove();
+    $.ajax({
+        type:'POST',
+        url:'/Home/traelocalizacion',
+        data:{
+            '_token':_token,
+            'id':id
+        },
+        success:function(data){
+            data['localizacion'].forEach(element=>{
+                    $("#equipoidtran").val(id);
+                    $("#sedeprovi").val(element.sede_id);
+                    $("#departamentosprovi").val(element.departamentos_id);
+                    $("#dependenciapro").val(element.dependencias_id);
+            });
+            data['translado'].forEach(element=>{
+                $('#listatranslado tr:last').after("<tr><td style='text-align:left;'>"+element.sede+"</td><td style='text-align:left;'>"+element.departamento+"</td><td style='text-align:left;'>"+element.dependencia+"</td><td>"+element.observacion+"</td></tr>");
+
+            });
+            $("#transladoequipo").modal("show");
+        }
+    });
+}
+function departamentostrans(id){
+    $("#departamentosactu").empty();
+    $.ajax({
+        type:'POST',
+        url:'/Home/traedepar',
+        data:{
+            '_token':_token,
+            'id':id.value
+        },
+        success:function(data){
+        $("#departamentosactu").append("<option>---Selecione---</option>")
+         data['departamentos'].forEach(element => {
+              $("#departamentosactu").append("<option value="+element.id+">"+element.nombre+"</option>");
+         });    
+               
+        }
+    });
+}
+function dependenciastrans(id){
+    $("#dependenciaactu").empty();
+    $.ajax({
+        type:'POST',
+        url:'/Home/traerdependencias',
+        data:{
+            '_token':_token,
+            'id':id.value
+        },
+        success:function(data){
+            
+            $("#dependenciaactu").append("<option>---Selecione---</option>")
+
+            data['dependencias'].forEach(element => {
+                $("#dependenciaactu").append("<option value="+element.id+">"+element.nombre+"</option>");
+            });
+        }
+    });
 }

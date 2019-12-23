@@ -13,10 +13,7 @@
         <button class="btn btn-primary" onclick="nuevo();">Nuevo</button>
         <a href="{{ route('equipos.pdf') }}" class="btn btn-sm btn-danger">
                 <i class="fa fa-file-pdf-o"></i>
-        </a>
-        <a href="{{ route('equipos.pdf') }}" class="btn btn-sm btn-success">
-            <i class="fa fa-file-excel-o"></i>
-        </a>     
+        </a>   
     </div>
     <div class="row">
         @foreach($equipos as $mequi)
@@ -117,6 +114,7 @@
                             <h4 id="estadoinfo"></h4>
                             <h4 id="tipoequipoinfo"></h4>
                             <h4 id="marcaequipoinfo"></h4>
+                            <h4 id="modeloequipoinfo"></h4>
                             <h4 id="serialinfo"></h4>
                             <h4 id="fechacomprainfo"></h4>
                             <h4 id="valorcomprainfo"></h4>

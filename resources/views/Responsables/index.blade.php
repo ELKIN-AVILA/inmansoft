@@ -28,7 +28,7 @@
                         <td>{{ $mres->id }}</td>
                         @foreach($empleados as $memple)
                             @if($mres->empleados_id == $memple->id )
-                                <td>{{ $memple->priape }}{{ $memple->prinom }}</td>
+                                <td>{{ $memple->priape }} {{ $memple->segape }} {{ $memple->prinom }}</td>
                             @endif
                         @endforeach
                         @foreach($equipos as $mequi)
@@ -81,7 +81,7 @@
                                     <select name="empleados_id" id="empleados_id" class="form-control">
                                         <option value="">---Selecione---</option>
                                         @foreach($empleados as $mres)
-                                            <option value="{{ $mres->id }}">{{ $mres->priape }} </option>
+                                            <option value="{{ $mres->id }}">{{ $mres->priape }}  {{ $mres->segape  }} {{ $mres->prinom }} </option>
                                         @endforeach
                                     </select>
                                 </div>

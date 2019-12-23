@@ -247,7 +247,6 @@
 						<thead>
 							<th>Imagen</th>
 							<th>Observacion</th>
-							<th>Acciones</th>
 						</thead>
 						<tbody>
 
@@ -507,18 +506,21 @@
 
 				</div>
 				<div class="modal-footer">
-					<h4 style="text-align:center;">Listado de Programas</h4>
-					<table class="table table-bordered" id="prolist">
-						<thead>
-							<th>Programa</th>
-							<th>Version</th>
-							<th>Estado</th>
-							<th>Accion</th>
-						</thead>
-						<tbody id="listpro">
+					<div style="height:300px;overflow:scroll;">
+						<h4 style="text-align:center;">Listado de Programas</h4>
+						<input type="text" name="filtropro" id="filtropro" class="form-control" onkeyup="filtropro();" placeholder="introduce el nombre del programa">
+						<table class="table table-bordered" id="prolist">
+							<thead>
+								<th>Programa</th>
+								<th>Version</th>
+								<th>Estado</th>
+								<th>Accion</th>
+							</thead>
+							<tbody id="listpro">
 
-						</tbody>
-					</table>
+							</tbody>
+						</table>
+					</div>
 				</div>
 			</div>
 		  </div>
@@ -646,7 +648,116 @@
         </div>
       </div>
 	<!---End Modal--->
-
+	<!--- New Modal Transladoi--->
+	<div class="modal fade" id="transladoequipo"  role="dialog">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+              <h4 class="modal-title">Translado de equipo</h4>
+            </div>
+            <div class="modal-body">
+				<form id="formultranslado">
+					<input type="hidden" name="equipoidtran" id="equipoidtran">
+				<div class="row">
+					<div class="col-sm-12">
+						<div class="col-sm-4">
+							<label for="">Sede Actual:</label>
+						</div>
+						<div class="col-sm-8">
+							<select name="sedeprovi" id="sedeprovi" class="form-control" disabled>
+								@foreach($sede as $msed)
+									<option value="{{ $msed->id }}">{{ $msed->nombre }}</option>
+								@endforeach
+							</select>
+						</div>
+					</div>
+					<div class="col-sm-12">
+						<div class="col-sm-4">
+							<label for="">Departamentos Actual:</label>
+						</div>
+						<div class="col-sm-8">
+							<select name="departamentosprovi" id="departamentosprovi" class="form-control" disabled>
+								@foreach($departamentos as $mdepar)
+									<option value="{{ $mdepar->id }}">{{ $mdepar->nombre }}</option>
+								@endforeach
+							</select>
+						</div>
+					</div>
+					<div class="col-sm-12">
+						<div class="col-sm-4">
+							<label for="">Dependencias Actual:</label>
+						</div>
+						<div class="col-sm-8">
+							<select name="dependenciapro" id="dependenciapro" class="form-control" disabled>
+								@foreach($dependencias as $mdep)
+									<option value="{{ $mdep->id }}">{{ $mdep->nombre }}</option>
+								@endforeach
+							</select>
+						</div>
+					</div>
+					<div class="col-sm-12">
+						<div class="col-sm-4">
+							<label for="">Sede translado:</label>
+						</div>
+						<div class="col-sm-8">
+							<select name="sedeactu" id="sedeactu" onchange="departamentostrans(this);" class="form-control">
+								@foreach($sede as $msede)
+									<option value="{{ $msede->id }}">{{ $msede->nombre }}</option>
+								@endforeach
+							</select>
+						</div>
+					</div>
+					<div class="col-sm-12">
+						<div class="col-sm-4">
+							<label for="">Departamento Translado:</label>
+						</div>
+						<div class="col-sm-8">
+							<select name="departamentosactu" id="departamentosactu" onchange="dependenciastrans(this);" class="form-control"></select>
+						</div>
+					</div>
+					<div class="col-sm-12">
+						<div class="col-sm-4">
+							<label for="">Dependencia Translado:</label>
+						</div>
+						<div class="col-sm-8">
+							<select name="dependenciaactu" id="dependenciaactu" class="form-control"></select>
+						</div>
+					</div>
+					<div class="col-sm-12">
+						<div class="col-sm-4">
+							<label for="">Observacion:</label>
+						</div>
+						<div class="col-sm-8">
+							<textarea name="observatransla" id="observatransla" cols="41" rows="10" maxlength="200" class="form-control" style="resize:none;"></textarea>
+						</div>
+					</div>
+					<div class="col-sm-12" style="text-align:end;">
+							<br>
+							<button class="btn btn-primary" type="submit">Guardar</button>
+					</div>
+				</div>
+				</form>
+            </div>
+            <div class="modal-footer">
+				<h4 style="text-align:center;">Listado De Translados</h4>
+				<table class="table table-bordered" id="listatranslado">
+					<thead>
+						<th>Sede</th>
+						<th>Departamento</th>
+						<th>Dependencia</th>
+						<th>Observacion</th>
+					</thead>
+					<tbody>
+						
+					</tbody>
+				</table>
+			</div>
+          </div>
+          
+        </div>
+      </div>
+	<!---End Modal -->
 @endsection
 
 @section('script')

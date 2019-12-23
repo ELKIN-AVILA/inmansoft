@@ -15,5 +15,18 @@
 
 <script>
 var _token=$('input[name=_token]').val();   
-</script>
 
+</script>
+<script>
+$(document).ready(function(){
+    var url = window.location;
+    $('ul.sidebar-menu a').filter(function() {
+        $('#pri').removeClass('active');
+        return this.href == url;
+    }).parent().addClass('active');
+
+    $('ul.treeview-menu a').filter(function() {
+        return this.href == url;
+    }).parentsUntil(".sidebar-menu > .treeview-menu").addClass('active');
+});
+</script>

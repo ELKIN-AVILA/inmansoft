@@ -31,9 +31,8 @@
 
         <!-- Sidebar Menu -->
         <ul class="sidebar-menu">
-            <li class="header">{{ trans('adminlte_lang::message.header') }}</li>
             <!-- Optionally, you can add icons to the links -->
-            <li class="active"><a href="{{ url('home') }}"><i class='fa fa-home'></i> <span>Principal</span></a></li>
+            <li class="active" id="pri"><a href="{{ url('home') }}"><i class='fa fa-home'></i> <span>Principal</span></a></li>
             @can('menu.admin')
             <li class="treeview">
                     <a href="#"><i class="fa fa-cogs"></i><span>Configuracion Sistema</span><i class="fa fa-angle-left pull-right"></i></a>
@@ -85,8 +84,9 @@
             </li>
 
             <li class="treeview">
-                <a href="#"><i class="fa fa-cogs"></i><span>Reportes</span><i class="fa fa-angle-left pull-right"></i></a>
+                <a href="#"><i class="fa fa-file-text-o"></i><span>Reportes</span><i class="fa fa-angle-left pull-right"></i></a>
                 <ul class="treeview-menu">
+                    <li><a href="{{ url('/Reportes') }}"><span>Reportes</span></a></li>
 
                 </ul> 
             </li>
