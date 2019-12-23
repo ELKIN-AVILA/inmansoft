@@ -14,7 +14,9 @@ use App\Empleados;
 use App\Localizacion;
 use App\Mantenimiento;
 use App\user;
+use App\Equipos;
 use  Anouar\Fpdf\Facades\Fpdf as Fpdf;
+use Mail;
 
 class CronomantenimientoController extends Controller
 {
@@ -125,20 +127,44 @@ class CronomantenimientoController extends Controller
             foreach($cronomantenimiento as $mcron){
                 $cronofecha=$mcron->fecha;
             }
-            /**ini mantenimiento disparador*//**preguntar  si solo dejamos por defecto el mantenimiento de los pc */
-           foreach($numequipo as $mmant){
-                $mantenim=new Mantenimiento();
-                $mantenim->fecha=$cronofecha;
-                $mantenim->cronomantenimiento_id=$request->iddet;
-                $mantenim->equipos_id=$mmant->equipos_id;
-                $mantenim->tipo="P"; 
-                $mantenim->tipmante_id=3;
-                $mantenim->save();
-                /**fin */
-           }
+            $nomdependencia=Dependencias::find($request->dependencias);
+            $nombredependencia=$nomdependencia->nombre;
+            $idemple='';
+            $jefedepende=Jefedependencia::where('dependencias_id','=',$request->dependencias)->get();
+            foreach($jefedepende as $mjefe){
+                $idemple=$mjefe->empleados_id;
+            }
+            $empleado=Empleados::find($idemple);
+            $nomemple=$empleado->prinom ." ". $empleado->priape;
+            $correoemple=$empleado->correo;
+            $fecini=$request->fci;
+            $fecfin=$request->fcf;             
+            foreach($numequipo as $mmant){
+                $equipos=Equipos::find($mmant->equipos_id);
+                if($equipos->tipequipo_id == 1 || $equipos->tipequipo_id == 3 ){
+                    $mantenim=new Mantenimiento();
+                    $mantenim->fecha=$cronofecha;
+                    $mantenim->cronomantenimiento_id=$request->iddet;
+                    $mantenim->equipos_id=$mmant->equipos_id;
+                    $mantenim->tipo="P"; 
+                    $mantenim->tipmante_id=3;
+                    $mantenim->save();
+                }
+            }
+            $this->correo($nomemple,$correoemple,$nombredependencia,$fecini,$fecfin);
             return response()->json("Se creo el registro");
 
         }
+    }
+    public function Correo($nomemple,$correoemple,$nombredependencia,$fecini,$fecfin){
+        $to_name = 'Inmansoft';
+        $to_email = $correoemple;
+        $data = array('nombre'=>$nomemple,'dependencia'=>$nombredependencia,'fecini'=>$fecini,'fecfin'=>$fecfin);
+        
+        Mail::send('emails.mail', $data, function($message) use ($to_email, $to_name) {
+            $message->to($to_email)->subject($to_name);
+            
+        });
     }
     public function traerjefe(Request $request){
         if($request->ajax()){
@@ -244,5 +270,5 @@ class CronomantenimientoController extends Controller
             exit;        
         
     }
-
+   
 }

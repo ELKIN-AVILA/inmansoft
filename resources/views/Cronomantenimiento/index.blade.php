@@ -138,7 +138,7 @@
                 <button class="btn btn-success" type="submit">Guardar</button>
             </form>
                 <div class="col-sm-12">
-                    <h2>Listado De Mantenimientos</h2>
+                    <h2 style="text-align:center">Listado De Mantenimientos</h2>
                     <table class="table table-bordered" id="tablecrono">
                         <thead>
                             <th>Sede</th>

@@ -150,7 +150,7 @@ function eliminar(id){
             if(data.val=="false"){
                 alertify.success("Se elimino el cronograma");
             }else{
-                alertify.error("No Se puede eliminar el cronograma ya que tiene proceso asociados");
+                alertify.error("No Se puede eliminar el cronograma ya que tiene procesos asociados");
             }
         }
     })
