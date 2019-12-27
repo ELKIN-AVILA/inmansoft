@@ -545,10 +545,11 @@ class HomeController extends Controller
 			$translado=array();
 			$transla=Transladoequip::where('equipos_id','=',$request->id)->get();
 			foreach($transla as $mtransl){
+				$fecha=substr($mtransl->created_at,0,10);
 				$sede=Sede::find($mtransl->sedepro_id);
 				$departamento=Departamentos::find($mtransl->departamentospro_id);
 				$dependencias=Dependencias::find($mtransl->dependenciaspro_id);
-				array_push($translado,['sede'=>$sede->nombre,'departamento'=>$departamento->nombre,'dependencia'=>$dependencias->nombre,'observacion'=>$mtransl->observacion]);
+				array_push($translado,['sede'=>$sede->nombre,'departamento'=>$departamento->nombre,'dependencia'=>$dependencias->nombre,'observacion'=>$mtransl->observacion,'fecha'=>$fecha]);
 			}
 			return response()->json(['localizacion'=>$localizacion,'translado'=>$translado]);
 		}

@@ -740,13 +740,14 @@
 				</form>
             </div>
             <div class="modal-footer">
-				<h4 style="text-align:center;">Listado De Translados</h4>
+				<h4 style="text-align:center;">Listado De Traslados</h4>
 				<table class="table table-bordered" id="listatranslado">
 					<thead>
 						<th>Sede</th>
 						<th>Departamento</th>
 						<th>Dependencia</th>
 						<th>Observacion</th>
+						<th>Fecha</th>
 					</thead>
 					<tbody>
 						

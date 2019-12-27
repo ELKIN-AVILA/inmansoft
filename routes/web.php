@@ -205,8 +205,8 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('/Reportes/Responsables','ReportesController@reporteresponsablesequipos');
         Route::get('/Reportes/Proveedores','ReportesController@reporteproveedores');
 
-        Route::get('/Correos','CorreosController@send');
-        
+        //Route::get('/Correos','CorreosController@send');
+        /**view prueba */
 });
 
 

@@ -166,6 +166,14 @@ class CronomantenimientoController extends Controller
             
         });
     }
+    public function correoview(){
+        $nombre='ELKIN';
+        $dependencias="SISTEMAS";
+        $fecini=2;
+        $fecfin=19;
+        return view('emails.mail',['nombre'=>$nombre,'dependencia'=>$dependencias,'fecini'=>$fecini,'fecfin'=>$fecfin]);
+
+    }
     public function traerjefe(Request $request){
         if($request->ajax()){
             $jefe=Jefedependencia::where('sede_id','=',$request->sede)->where('departamentos_id','=',$request->departamentos)->where('dependencias_id','=',$request->id)->get();

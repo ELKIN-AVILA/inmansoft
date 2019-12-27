@@ -939,7 +939,7 @@ function translado(id){
                     $("#dependenciapro").val(element.dependencias_id);
             });
             data['translado'].forEach(element=>{
-                $('#listatranslado tr:last').after("<tr><td style='text-align:left;'>"+element.sede+"</td><td style='text-align:left;'>"+element.departamento+"</td><td style='text-align:left;'>"+element.dependencia+"</td><td>"+element.observacion+"</td></tr>");
+                $('#listatranslado tr:last').after("<tr><td style='text-align:left;'>"+element.sede+"</td><td style='text-align:left;'>"+element.departamento+"</td><td style='text-align:left;'>"+element.dependencia+"</td><td>"+element.observacion+"</td><td>"+element.fecha+"</td></tr>");
 
             });
             $("#transladoequipo").modal("show");
